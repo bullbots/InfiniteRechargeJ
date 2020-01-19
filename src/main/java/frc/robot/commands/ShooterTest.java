@@ -30,12 +30,6 @@ public class ShooterTest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.set(0, 0);
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
     int top = (int) SmartDashboard.getNumber("Top Speed", 0);
     int bottom = (int) SmartDashboard.getNumber("Bottom Speed", 0);
 
@@ -46,6 +40,12 @@ public class ShooterTest extends CommandBase {
     bottom = bottom < -5600? -5600: bottom;
 
     shooter.set(top, bottom);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    shooter.set(0, 0);
   }
 
   // Returns true when the command should end.

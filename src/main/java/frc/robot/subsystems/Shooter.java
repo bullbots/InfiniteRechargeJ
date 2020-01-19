@@ -22,8 +22,8 @@ public class Shooter extends SubsystemBase{
     private CANPIDController bottom_pid_controller;
 
     public Shooter(){
-        top_shooter = new CANSparkMax(0, MotorType.kBrushless);
-        bottom_shooter = new CANSparkMax(1, MotorType.kBrushless);
+        top_shooter = new CANSparkMax(Constants.TOP_SHOOTER_PORT, MotorType.kBrushless);
+        bottom_shooter = new CANSparkMax(Constants.BOTTOM_SHOOTER_PORT, MotorType.kBrushless);
 
         top_encoder = top_shooter.getEncoder();
         bottom_encoder = bottom_shooter.getEncoder();
@@ -59,20 +59,20 @@ public class Shooter extends SubsystemBase{
     }
 
     public void periodic(){
-        double kF = top_pid_controller.getFF();
-        double kP = top_pid_controller.getP();
-        double kI = top_pid_controller.getI();
-        double kD = top_pid_controller.getD();
+        // double kF = top_pid_controller.getFF();
+        // double kP = top_pid_controller.getP();
+        // double kI = top_pid_controller.getI();
+        // double kD = top_pid_controller.getD();
 
-        double newF = SmartDashboard.getNumber("Shooter F", kF);
-        double newP = SmartDashboard.getNumber("Shooter P", kP);
-        double newI = SmartDashboard.getNumber("Shooter I", kI);
-        double newD = SmartDashboard.getNumber("Shooter D", kD);
+        // double newF = SmartDashboard.getNumber("Shooter F", kF);
+        // double newP = SmartDashboard.getNumber("Shooter P", kP);
+        // double newI = SmartDashboard.getNumber("Shooter I", kI);
+        // double newD = SmartDashboard.getNumber("Shooter D", kD);
 
-        top_pid_controller.setFF(newF);
-        top_pid_controller.setP(newP);
-        top_pid_controller.setI(newI);
-        top_pid_controller.setD(newD);
+        // top_pid_controller.setFF(newF);
+        // top_pid_controller.setP(newP);
+        // top_pid_controller.setI(newI);
+        // top_pid_controller.setD(newD);
 
         SmartDashboard.putNumber("Top Encoder Velocity", top_encoder.getVelocity());
         SmartDashboard.putNumber("Bottom Encoder Velocity", bottom_encoder.getVelocity());

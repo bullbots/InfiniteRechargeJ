@@ -16,8 +16,8 @@ public final class Constants {
     public static double RIGHT_MASTER_I = 0;
     public static double RIGHT_MASTER_D = 0;
 
-    public static int TOP_SHOOTER_PORT = 5;
-    public static int BOTTOM_SHOOTER_PORT = 6;
+    public static int TOP_SHOOTER_PORT = 6;
+    public static int BOTTOM_SHOOTER_PORT = 7;
 
     public static double SHOOTER_FF = 0;
     public static double SHOOTER_P = 5e-5;
