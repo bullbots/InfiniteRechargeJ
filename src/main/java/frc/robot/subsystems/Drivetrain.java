@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.Constants;
 
@@ -58,5 +59,24 @@ public class Drivetrain extends SubsystemBase {
 
   public void diffDrive(double x, double y){
     drive.arcadeDrive(x, y);
+  }
+
+  /* Sets Drivetrain control mode and magnitudes for left and right side
+
+    Args:
+        control_mode (WPI_TalonSRX.ControlMode): Control Mode for both motor controllers
+        left_magnitude (float): Magnitude for the left side
+        right_magnitude (float): Magnitude for the right side
+  */
+  public void set(ControlMode control_mode, float left_magnitude, float right_magnitude) {
+    left_master_talon.set(control_mode, left_magnitude);
+    right_master_talon.set(control_mode, right_magnitude);
+  }
+
+  /* Sets all motor outputs to zero, run when robot is disabled
+   */
+  public void stop() {
+    left_master_talon.set(0);
+    right_master_talon.set(0);
   }
 }
