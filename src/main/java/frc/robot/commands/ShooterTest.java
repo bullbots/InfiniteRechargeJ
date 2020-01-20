@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
+import static frc.robot.Constants.NEO_MAX_RPM;
+
+
 public class ShooterTest extends CommandBase {
   /**
    * Creates a new ShooterTest.
@@ -18,7 +21,6 @@ public class ShooterTest extends CommandBase {
   private Shooter shooter;
   public ShooterTest(Shooter shooter) {
     this.shooter = shooter;
-
     addRequirements(this.shooter);
   }
 
@@ -30,14 +32,12 @@ public class ShooterTest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    int top = (int) SmartDashboard.getNumber("Top Speed", 0);
-    int bottom = (int) SmartDashboard.getNumber("Bottom Speed", 0);
+    double top = SmartDashboard.getNumber("Top Speed", 0);
+    double bottom = SmartDashboard.getNumber("Bottom Speed", 0);
 
-    top = top > 5600? 5600: top;
-    top = top < -5600? -5600: top;
-
-    bottom = bottom > 5600? 5600: bottom;
-    bottom = bottom < -5600? -5600: bottom;
+    //  Min function followed by a Max clamps the value.
+    top = Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, top));
+    bottom = Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, bottom));
 
     shooter.set(top, bottom);
   }
