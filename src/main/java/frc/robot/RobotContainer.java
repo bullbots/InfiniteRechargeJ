@@ -22,11 +22,12 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // User Input
-  // public final Joystick stick = new Joystick(0);
+  public final Joystick stick = new Joystick(0);
 
   // Subsystems
-  private final Shooter shooter = new Shooter();
-  // private final Drivetrain drivetrain = new Drivetrain();
+  // private final Shooter shooter = new Shooter();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -36,13 +37,15 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // drivetrain.setDefaultCommand(new JoystickDrive(
-    //   drivetrain,
-    //   () -> stick.getY(),
-    //   () -> stick.getX()
-    // ));
+    drivetrain.setDefaultCommand(new JoystickDrive(
+      drivetrain,
+      () -> stick.getY(),
+      () -> stick.getX(),
+      () -> stick.getZ()
+    ));
 
-    shooter.setDefaultCommand(new ShooterTest(shooter));
+    // shooter.setDefaultCommand(new ShooterTest(shooter));
+    intake.setDefaultCommand(new IntakeTest(intake));
   }
 
   /**
@@ -63,5 +66,10 @@ public class RobotContainer {
   public void getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     
+  }
+
+  public void stopAllSubsystems(){
+    drivetrain.stop();
+    intake.stop();
   }
 }
