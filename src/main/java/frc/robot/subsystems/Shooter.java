@@ -25,6 +25,9 @@ public class Shooter extends SubsystemBase{
         top_shooter = new CANSparkMax(Constants.TOP_SHOOTER_PORT, MotorType.kBrushless);
         bottom_shooter = new CANSparkMax(Constants.BOTTOM_SHOOTER_PORT, MotorType.kBrushless);
 
+        top_shooter.clearFaults();
+        bottom_shooter.clearFaults();
+
         top_encoder = top_shooter.getEncoder();
         bottom_encoder = bottom_shooter.getEncoder();
 
@@ -76,6 +79,12 @@ public class Shooter extends SubsystemBase{
 
         SmartDashboard.putNumber("Top Encoder Velocity", top_encoder.getVelocity());
         SmartDashboard.putNumber("Bottom Encoder Velocity", bottom_encoder.getVelocity());
+
+        SmartDashboard.putNumber("Top Current", top_shooter.getOutputCurrent());
+        SmartDashboard.putNumber("Bottom Current", bottom_shooter.getOutputCurrent());
+
+        SmartDashboard.putNumber("Top Temp", top_shooter.getMotorTemperature());
+        SmartDashboard.putNumber("Bottom Temp", top_shooter.getMotorTemperature());
     }
 
 }

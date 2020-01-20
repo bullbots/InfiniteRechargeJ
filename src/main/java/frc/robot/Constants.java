@@ -23,4 +23,6 @@ public final class Constants {
     public static double SHOOTER_P = 5e-5;
     public static double SHOOTER_I = 1e-6;
     public static double SHOOTER_D = 0;
+
+    public static int INTAKE_PORT = 5;
 }

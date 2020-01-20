@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Top Speed", 0);
     SmartDashboard.putNumber("Bottom Speed", 0);
+    SmartDashboard.putNumber("Intake Speed", 0);
   }
 
   /**
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    m_robotContainer.stopAllSubsystems();
   }
 
   @Override
