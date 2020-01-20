@@ -47,10 +47,13 @@ public class Shooter extends SubsystemBase {
     public Shooter(){
         top_shooter = new CANSparkMax(Constants.TOP_SHOOTER_PORT, MotorType.kBrushless);
         bottom_shooter = new CANSparkMax(Constants.BOTTOM_SHOOTER_PORT, MotorType.kBrushless);
-
+      
         // Always reset to factory defaults, just in case.
         top_shooter.restoreFactoryDefaults();
         bottom_shooter.restoreFactoryDefaults();
+      
+        top_shooter.clearFaults();
+        bottom_shooter.clearFaults();
 
         top_encoder = top_shooter.getEncoder();
         bottom_encoder = bottom_shooter.getEncoder();
@@ -165,6 +168,7 @@ public class Shooter extends SubsystemBase {
         // top_pid_controller.setP(newP);
         // top_pid_controller.setI(newI);
         // top_pid_controller.setD(newD);
+
         topVelocity.setDouble(getVelocity(MotorPlacement.TOP));
         bottomVelocity.setDouble(getVelocity(MotorPlacement.BOTTOM));
     }

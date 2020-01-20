@@ -7,26 +7,20 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Intake;
 
-public class JoystickDrive extends CommandBase {
-  
-  private Drivetrain m_drivetrain;
-  private DoubleSupplier joyY;
-  private DoubleSupplier joyX;
-  private DoubleSupplier joyZ;
+public class IntakeTest extends CommandBase {
+  /**
+   * Creates a new IntakeTest.
+   */
+  private Intake intake;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, DoubleSupplier joyZ) {
-    m_drivetrain = drivetrain;
-    this.joyY = joyY;
-    this.joyX = joyX;
-    this.joyZ = joyZ;
+  public IntakeTest(Intake intake) {
+    this.intake = intake;
 
-    addRequirements(m_drivetrain);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -37,16 +31,16 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double y = -joyY.getAsDouble(); // Because Negative is forward on the joysticks
-    double x = -joyX.getAsDouble();
-    double z = joyZ.getAsDouble();   
-
-    m_drivetrain.diffDrive(y, z, x);
+    double in = SmartDashboard.getNumber("Intake Speed", 0);
+    in = in > 1? 1: in;
+    in = in < -1? -1: in;
+    intake.set(in);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.set(0);
   }
 
   // Returns true when the command should end.
