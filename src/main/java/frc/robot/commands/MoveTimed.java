@@ -9,18 +9,19 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Drivetrain;
 
-public class MoveTimed extends CommandBase {
+public class MoveTimed extends WaitCommand {
   private Drivetrain drivetrain;
   /**
    * Creates a new MoveTimed.
    */
-  public MoveTimed(Drivetrain drivetrain) {
+  public MoveTimed(Drivetrain drivetrain, double seconds) {
+    super(seconds);
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+
 
     addRequirements(this.drivetrain);
   }

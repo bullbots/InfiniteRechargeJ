@@ -10,19 +10,19 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Drivetrain;
 
-public class SpinTimed extends CommandBase {
+public class SpinTimed extends WaitCommand {
   private Drivetrain drivetrain;
-  private int duration;
   /**
    * Creates a new SpinTimed.
    */
   // duration is the timeout time, in seconds
-  public SpinTimed(Drivetrain drivetrain, int duration) {
+  public SpinTimed(Drivetrain drivetrain, double seconds) {
+    super(seconds);
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
-    this.duration = duration;
 
     addRequirements(this.drivetrain);
   }
