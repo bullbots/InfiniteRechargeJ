@@ -25,4 +25,5 @@ public final class Constants {
     public static double SHOOTER_D = 0;
 
     public static int INTAKE_PORT = 5;
+    public static int INTAKE_Wheel_PORT = 8;
 }
