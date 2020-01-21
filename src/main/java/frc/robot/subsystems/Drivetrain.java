@@ -6,8 +6,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
@@ -17,6 +18,34 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX right_master_talon;
   private WPI_TalonSRX right_slave_talon;
   private MecanumDrive drive;
+  int P, I, D = 1;
+  int integral, previous_error, setpoint = 0;
+  Gyro gyro;
+  DifferentialDrive robotDrive;
+  private double rcw;
+
+
+  public void Drive(Gyro gyro) {
+      this.gyro = gyro;
+  }
+
+  public void setSetpoint(int setpoint)
+  {
+      this.setpoint = setpoint;
+  }
+
+  public void PID(){
+      double error = setpoint - gyro.getAngle(); // Error = Target - Actual
+      this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+      double derivative = (error - this.previous_error) / .02;
+      this.rcw = P*error + I*this.integral + D*derivative;
+  }
+
+  public void execute()
+  {
+      PID();
+      robotDrive.arcadeDrive(0, rcw);
+  }
   
   public Drivetrain() {
     left_master_talon = new WPI_TalonSRX(Constants.LEFT_MASTER_PORT);
