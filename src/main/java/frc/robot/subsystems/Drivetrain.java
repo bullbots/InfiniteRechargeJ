@@ -56,8 +56,19 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void diffDrive(double x, double y, double z){
+    x = DeadBand(x);
+    y = DeadBand(y);
+    z = DeadBand(z);
     drive.driveCartesian(y, x, z);
   }
+
+  public double DeadBand(double num) {
+      double deadband_value = .1;
+      if (Math.abs(num) < deadband_value) {
+        num = 0;
+      }
+      return num;
+    }
 
   public void stop(){
     left_master_talon.stopMotor();
