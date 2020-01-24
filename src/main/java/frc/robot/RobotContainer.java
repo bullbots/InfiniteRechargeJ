@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,10 +22,11 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // User Input
-  public final Joystick stick = new Joystick(0);
+  public static Joystick stick = new Joystick(0);
+  public static JoystickButton trigger = new JoystickButton(stick, 1);
 
   // Subsystems
-  // private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
   private static boolean bRunAsJoystickDrive = true;
@@ -36,6 +38,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
@@ -58,6 +61,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    trigger.whileHeld(new ShooterTest());
   }
 
 
