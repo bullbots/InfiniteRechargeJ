@@ -6,6 +6,8 @@ public final class Constants {
     public static int RIGHT_MASTER_PORT = 3;
     public static int RIGHT_SLAVE_PORT = 4;
 
+    public static int CLIMB_TALON = 6;
+
     public static double LEFT_MASTER_FF = 0;
     public static double LEFT_MASTER_P = 0;
     public static double LEFT_MASTER_I = 0;
