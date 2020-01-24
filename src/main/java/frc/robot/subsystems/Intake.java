@@ -19,18 +19,25 @@ public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private WPI_TalonSRX talon;
+  private WPI_TalonSRX intake_motor;
+  private WPI_TalonSRX wheel_motor;
+
 
   private NetworkTableEntry intakeVelocity;
 
   public Intake() {
-    talon = new WPI_TalonSRX(Constants.INTAKE_PORT);
-
     configureShuffleBoard();
+
+    intake_motor = new WPI_TalonSRX(Constants.INTAKE_PORT);
+    wheel_motor = new WPI_TalonSRX(Constants.INTAKE_Wheel_PORT);
   }
 
-  public void set(double val){
-    talon.set(val);
+  public void setintake(double val){
+    intake_motor.set(val);
+  }
+
+  public void setwheel(double val){
+    wheel_motor.set(val);
   }
 
   private void configureShuffleBoard() {
@@ -49,6 +56,22 @@ public class Intake extends SubsystemBase {
   }
 
   public void stop(){
-    talon.stopMotor();
+    intake_motor.stopMotor();
+    wheel_motor.stopMotor();
   }
 }
+
+/*
+This is a car
+
+
+    |______|
+    | |  | |
+      |  |
+    |_|__|_|
+    |      |
+
+
+    I really like it :)
+    Made by Triston Van Wyk
+    */

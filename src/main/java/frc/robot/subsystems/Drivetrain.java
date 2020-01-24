@@ -5,7 +5,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -82,8 +84,19 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void diffDrive(double x, double y, double z){
+    x = DeadBand(x);
+    y = DeadBand(y);
+    z = DeadBand(z);
     drive.driveCartesian(y, x, z);
   }
+
+  public double DeadBand(double num) {
+      double deadband_value = .1;
+      if (Math.abs(num) < deadband_value) {
+        num = 0;
+      }
+      return num;
+    }
 
   public void stop(){
     left_master_talon.stopMotor();
@@ -93,5 +106,24 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     rightMasterVelocity.setDouble(right_master_talon.getSelectedSensorVelocity());
     leftMasterVelocity.setDouble(left_master_talon.getSelectedSensorVelocity());
+  }
+
+  /* Sets Drivetrain control mode and magnitudes for left and right side
+
+    Args:
+        control_mode (WPI_TalonSRX.ControlMode): Control Mode for both motor controllers
+        left_magnitude (float): Magnitude for the left side
+        right_magnitude (float): Magnitude for the right side
+  */
+  public void set(ControlMode control_mode, float left_magnitude, float right_magnitude) {
+    left_master_talon.set(control_mode, left_magnitude);
+    right_master_talon.set(control_mode, right_magnitude);
+  }
+
+  /* Sets all motor outputs to zero, run when robot is disabled
+   */
+  public void stop() {
+    left_master_talon.set(0);
+    right_master_talon.set(0);
   }
 }
