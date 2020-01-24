@@ -13,7 +13,6 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
-
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -28,6 +27,7 @@ public class RobotContainer {
   // private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
+  private static boolean bRunAsJoystickDrive = true;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -44,7 +44,10 @@ public class RobotContainer {
       () -> stick.getZ()
     ));
 
+    //drivetrain.setDefaultCommand(new TankDrive (drivetrain, () -> stick.getY()));
+
     // shooter.setDefaultCommand(new ShooterTest(shooter));
+    
     intake.setDefaultCommand(new IntakeTest(intake));
   }
 

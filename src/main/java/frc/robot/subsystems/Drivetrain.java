@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 import frc.robot.Constants;
@@ -17,6 +18,7 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX right_master_talon;
   private WPI_TalonSRX right_slave_talon;
   private MecanumDrive drive;
+  private DifferentialDrive tankDrive;
   
   public Drivetrain() {
     left_master_talon = new WPI_TalonSRX(Constants.LEFT_MASTER_PORT);
@@ -60,6 +62,11 @@ public class Drivetrain extends SubsystemBase {
     y = DeadBand(y);
     z = DeadBand(z);
     drive.driveCartesian(y, x, z);
+  }
+
+  public void tankDrive(double y){
+    y = DeadBand(y);
+    tankDrive.tankDrive(y, y);
   }
 
   public double DeadBand(double num) {
