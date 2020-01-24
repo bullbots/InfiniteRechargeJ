@@ -36,9 +36,7 @@ public class Drivetrain extends SubsystemBase {
     // left_slave_talon.setInverted(true);
 
     left_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
-    left_slave_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
     right_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
-    right_slave_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
     left_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     right_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
