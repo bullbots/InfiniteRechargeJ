@@ -27,8 +27,8 @@ public class RobotContainer {
   public static JoystickButton trigger = new JoystickButton(stick, 1);
 
   // Subsystems
-  private final Shooter shooter = new Shooter();
-  // private final Drivetrain drivetrain = new Drivetrain();
+  // private final Shooter shooter = new Shooter();
+  private final Drivetrain drivetrain = new Drivetrain();
   // private final Intake intake = new Intake();
 
   /**
@@ -40,14 +40,14 @@ public class RobotContainer {
     configureButtonBindings();
     
 
-    // drivetrain.setDefaultCommand(new JoystickDrive(
-    //   drivetrain,
-    //   () -> stick.getY(),
-    //   () -> stick.getX(),
-    //   () -> stick.getZ()
-    // ));
+    drivetrain.setDefaultCommand(new JoystickDrive(
+      drivetrain,
+      () -> stick.getY(),
+      () -> stick.getX(),
+      () -> stick.getZ()
+    ));
 
-    shooter.setDefaultCommand(new ShooterTest(shooter));
+    // shooter.setDefaultCommand(new ShooterTest(shooter));
     // intake.setDefaultCommand(new IntakeTest(intake));
   }
 
