@@ -1,4 +1,7 @@
 package frc.robot;
+import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public final class Constants {
     public static int LEFT_MASTER_PORT = 1;
@@ -23,9 +26,44 @@ public final class Constants {
     public static double SHOOTER_P = 5e-5;
     public static double SHOOTER_I = 1e-6;
     public static double SHOOTER_D = 0;
-  
+
     // Neo motor contants
     public static double NEO_MAX_RPM = 5676; // http://www.revrobotics.com/rev-21-1650/ "Empirical Free Speed"
   
     public static int INTAKE_PORT = 5;
 }
+
+
+/*
+
+This is a 16 wheeler 
+
+
+|_|______|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |  ||  | |
+     ||
+     ||
+     ||
+     || 
+|_|__||__|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |      | |
+
+
+This is #3 in the car series.
+Made by Triston Van Wyk
+
+*/

@@ -34,17 +34,7 @@ public class Drivetrain extends SubsystemBase {
       this.setpoint = setpoint;
   }
 
-  public void PID(){
-      double error = setpoint - gyro.getAngle(); // Error = Target - Actual
-      this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
-      double derivative = (error - this.previous_error) / .02;
-      this.rcw = P*error + I*this.integral + D*derivative;
-  }
-
-  public void execute()
-  {
-      PID();
-      robotDrive.arcadeDrive(0, rcw);
+  public void execute(){
   }
   
   public Drivetrain() {
