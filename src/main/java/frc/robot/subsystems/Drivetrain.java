@@ -44,13 +44,15 @@ public class Drivetrain extends SubsystemBase {
     // left_master_talon.setInverted(true);
     // left_slave_talon.setInverted(true);
 
+    left_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+    right_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+
     left_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     right_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     left_slave_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     right_slave_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
     drive = new MecanumDrive(left_master_talon, left_slave_talon, right_master_talon, right_slave_talon);
-
     configurePID();
     configureShuffleBoard();
   }
