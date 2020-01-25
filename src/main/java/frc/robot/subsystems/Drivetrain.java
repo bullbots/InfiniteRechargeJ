@@ -57,6 +57,7 @@ public class Drivetrain extends SubsystemBase {
 
     drive = new MecanumDrive(left_master_talon, left_slave_talon, right_master_talon, right_slave_talon);
     configurePID();
+    configureMotionMagic();
     configureShuffleBoard();
   }
 
@@ -70,6 +71,14 @@ public class Drivetrain extends SubsystemBase {
     right_master_talon.config_kP(0, Constants.RIGHT_MASTER_P);
     right_master_talon.config_kI(0, Constants.RIGHT_MASTER_I);
     right_master_talon.config_kD(0, Constants.RIGHT_MASTER_D);
+  }
+
+  private void configureMotionMagic() {
+    left_master_talon.configMotionCruiseVelocity(Constants.LEFT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    left_master_talon.configMotionAcceleration(Constants.LEFT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
+    
+    right_master_talon.configMotionCruiseVelocity(Constants.RIGHT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    right_master_talon.configMotionAcceleration(Constants.RIGHT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
   }
 
   private void configureShuffleBoard() {
