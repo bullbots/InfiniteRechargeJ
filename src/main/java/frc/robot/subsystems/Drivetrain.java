@@ -24,6 +24,9 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX right_slave_talon;
   private MecanumDrive drive;
 
+  private double left_master_position;
+  private double right_master_position;
+
   private NetworkTableEntry leftMasterVelocity;
   private NetworkTableEntry rightMasterVelocity;
   
@@ -100,6 +103,11 @@ public class Drivetrain extends SubsystemBase {
       return num;
     }
 
+  public double[] getPosition() {
+    left_master_position = left_master_talon.getSelectedSensorPosition();
+    right_master_position = right_master_talon.getSelectedSensorPosition();
+    return new double[] {left_master_position, right_master_position};
+  } 
 
   public void stop(){
     left_master_talon.stopMotor();
