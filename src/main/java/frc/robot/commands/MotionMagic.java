@@ -19,27 +19,28 @@ public class MotionMagic extends CommandBase {
   private int targetDistance;
   private double currentPosition;
 
+  private int allowedError = 100;
+
   public MotionMagic(Drivetrain drivetrain, int targetDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
-    targetDistance = 5; // This number is the distance it will travel and can be changed
+    this.targetDistance = targetDistance;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.drivetrain.set(ControlMode.MotionMagic, 0, 0); // Is this line needed? Shouldn't the motors just turn off when it reaches the targetDistance?
   }
 
   // Returns true when the command should end.
@@ -47,8 +48,8 @@ public class MotionMagic extends CommandBase {
   public boolean isFinished() {
     double[] position = this.drivetrain.getPosition();
     if (position[0] == position[1])
-      currentPosition = position[0]; // There might be a cleaner way to do this, I did this because the if statement doesn't work with an array
-    if (currentPosition == targetDistance) {
+      currentPosition = position[0];
+    if (Math.abs(currentPosition - targetDistance) == allowedError) {
       return true;
     } else {
       return false;
