@@ -85,6 +85,11 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+/** This sets up the differental drive
+ * @param x This is the x value of the robot
+ * @param y This is the y value of the robot
+ * @param z This is the z value of the robot
+ */
   public void diffDrive(double x, double y, double z){
     x = DeadBand(x);
     y = DeadBand(y);
@@ -111,13 +116,12 @@ public class Drivetrain extends SubsystemBase {
     leftMasterVelocity.setDouble(left_master_talon.getSelectedSensorVelocity());
   }
 
-  /* Sets Drivetrain control mode and magnitudes for left and right side
 
-    Args:
-        control_mode (WPI_TalonSRX.ControlMode): Control Mode for both motor controllers
-        left_magnitude (float): Magnitude for the left side
-        right_magnitude (float): Magnitude for the right side
-  */
+  /** Sets Drivetrain control mode and magnitudes for left and right side
+   * @param control_mode This is the control mode
+   * @param left_magnitude This is the left side magnitude
+   * @param right_magnitude This is the rigth side magnitude
+   */
   public void set(ControlMode control_mode, float left_magnitude, float right_magnitude) {
     left_master_talon.set(control_mode, left_magnitude);
     right_master_talon.set(control_mode, right_magnitude);
