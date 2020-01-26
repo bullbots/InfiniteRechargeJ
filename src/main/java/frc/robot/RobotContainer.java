@@ -28,8 +28,8 @@ public class RobotContainer {
 
   // Subsystems
   private final Shooter shooter = new Shooter();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Intake intake = new Intake();
+  // private final Drivetrain drivetrain = new Drivetrain();
+  // private final Intake intake = new Intake();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -40,15 +40,15 @@ public class RobotContainer {
     configureButtonBindings();
     
 
-    drivetrain.setDefaultCommand(new JoystickDrive(
-      drivetrain,
-      () -> stick.getY(),
-      () -> stick.getX(),
-      () -> stick.getZ()
-    ));
+    // drivetrain.setDefaultCommand(new JoystickDrive(
+    //   drivetrain,
+    //   () -> stick.getY(),
+    //   () -> stick.getX(),
+    //   () -> stick.getZ()
+    // ));
 
-    // shooter.setDefaultCommand(new ShooterTest(shooter));
-    intake.setDefaultCommand(new IntakeTest(intake));
+    shooter.setDefaultCommand(new ShooterTest(shooter));
+    // intake.setDefaultCommand(new IntakeTest(intake));
   }
 
   /**
@@ -59,7 +59,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    trigger.whileHeld(new ShooterTest());
+    // trigger.whileHeld(new ShooterTest());
   }
 
 
@@ -74,7 +74,7 @@ public class RobotContainer {
   }
 
   public void stopAllSubsystems(){
-    drivetrain.stop();
-    intake.stop();
+    // drivetrain.stop();
+    // intake.stop();
   }
 }

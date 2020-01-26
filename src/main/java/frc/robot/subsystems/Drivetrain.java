@@ -72,13 +72,6 @@ public class Drivetrain extends SubsystemBase {
       return num;
     }
 
-  public void stop(){
-    left_master_talon.stopMotor();
-    left_slave_talon.stopMotor();
-    right_master_talon.stopMotor();
-    right_slave_talon.stopMotor();
-  }
-
   /* Sets Drivetrain control mode and magnitudes for left and right side
 
     Args:

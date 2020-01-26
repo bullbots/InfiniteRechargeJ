@@ -34,13 +34,13 @@ public class IntakeTest extends CommandBase {
     double in = SmartDashboard.getNumber("Intake Speed", 0);
     in = in > 1? 1: in;
     in = in < -1? -1: in;
-    intake.set(in);
+    // intake.set(in);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.set(0);
+    // intake.set(0);
   }
 
   // Returns true when the command should end.

@@ -19,12 +19,9 @@ public class ShooterTest extends CommandBase {
    * Creates a new ShooterTest.
    */
   private Shooter shooter;
-  public ShooterTest() {
+  public ShooterTest(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(this.shooter);
-    double top_vel = 1;      // this can be chaged to the actual velocity later
-    double bottom_vel = 1;  // This can be changed to the actual velocity later
-    shooter.set(top_vel, bottom_vel);
   }
 
   // Called when the command is initially scheduled.
