@@ -44,8 +44,8 @@ public class Drivetrain extends SubsystemBase {
     // left_master_talon.setInverted(true);
     // left_slave_talon.setInverted(true);
 
-    left_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
-    right_master_talon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+    left_master_talon.configOpenloopRamp(Constants.DRIVETRAIN_RAMP);
+    right_master_talon.configOpenloopRamp(Constants.DRIVETRAIN_RAMP);
 
     left_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     right_master_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
@@ -125,8 +125,4 @@ public class Drivetrain extends SubsystemBase {
 
   /* Sets all motor outputs to zero, run when robot is disabled
    */
-  public void stop() {
-    left_master_talon.set(0);
-    right_master_talon.set(0);
-  }
 }

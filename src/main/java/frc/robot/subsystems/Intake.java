@@ -52,7 +52,7 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    intakeVelocity.setDouble(talon.getSelectedSensorVelocity());
+    // intakeVelocity.setDouble(talon.getSelectedSensorVelocity());
   }
 
   public void stop(){
