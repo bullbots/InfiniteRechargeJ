@@ -21,8 +21,8 @@ public final class Constants {
     public static double RIGHT_MASTER_I = 0;
     public static double RIGHT_MASTER_D = 0;
 
-    public static int RIGHT_MASTER_ACCELERATION = 0;
-    public static int RIGHT_MASTER_VELOCITY = 0;
+    public static int RIGHT_MASTER_ACCELERATION = 3300;
+    public static int RIGHT_MASTER_VELOCITY = 3300;
 
     public static int kTIMEOUT_MS = 0;
 
