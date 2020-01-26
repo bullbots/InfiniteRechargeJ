@@ -24,6 +24,9 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX right_slave_talon;
   private MecanumDrive drive;
 
+  private double left_master_position;
+  private double right_master_position;
+
   private NetworkTableEntry leftMasterVelocity;
   private NetworkTableEntry rightMasterVelocity;
   
@@ -54,6 +57,7 @@ public class Drivetrain extends SubsystemBase {
 
     drive = new MecanumDrive(left_master_talon, left_slave_talon, right_master_talon, right_slave_talon);
     configurePID();
+    configureMotionMagic();
     configureShuffleBoard();
   }
 
@@ -67,6 +71,14 @@ public class Drivetrain extends SubsystemBase {
     right_master_talon.config_kP(0, Constants.RIGHT_MASTER_P);
     right_master_talon.config_kI(0, Constants.RIGHT_MASTER_I);
     right_master_talon.config_kD(0, Constants.RIGHT_MASTER_D);
+  }
+
+  private void configureMotionMagic() {
+    left_master_talon.configMotionCruiseVelocity(Constants.LEFT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    left_master_talon.configMotionAcceleration(Constants.LEFT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
+    
+    right_master_talon.configMotionCruiseVelocity(Constants.RIGHT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    right_master_talon.configMotionAcceleration(Constants.RIGHT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
   }
 
   private void configureShuffleBoard() {
@@ -105,6 +117,11 @@ public class Drivetrain extends SubsystemBase {
       return num;
     }
 
+  public double[] getPosition() {
+    left_master_position = left_master_talon.getSelectedSensorPosition();
+    right_master_position = right_master_talon.getSelectedSensorPosition();
+    return new double[] {left_master_position, right_master_position};
+  } 
 
   public void stop(){
     left_master_talon.stopMotor();
