@@ -30,5 +30,6 @@ public final class Constants {
     public static double NEO_MAX_RPM = 5676; // http://www.revrobotics.com/rev-21-1650/ "Empirical Free Speed"
   
     public static int INTAKE_PORT = 5;
+    public static int DRIVETRAIN_RAMP = 1;
     public static int INTAKE_Wheel_PORT = 8;
 }

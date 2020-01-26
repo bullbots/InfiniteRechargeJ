@@ -80,19 +80,23 @@ public class Shooter extends SubsystemBase {
     private void configureShuffleBoard() {
         topVelocity = Shuffleboard.getTab("Diagnostics")
                 .add("Top Encoder Velocity", 0)
-                .withSize(3, 3)
-                .withPosition(4, 0)
+                .withSize(2, 2)
+                .withPosition(0, 4)
                 .withWidget(BuiltInWidgets.kGraph)
-                .withProperties(Map.of("min", -NEO_MAX_RPM, "max", NEO_MAX_RPM)) // Doesn't seem to do anything.
                 .getEntry();
-
         bottomVelocity = Shuffleboard.getTab("Diagnostics")
                 .add("Bottom Encoder Velocity", 0)
-                .withSize(3, 3)
-                .withPosition(7, 0)
+                .withSize(2, 2)
+                .withPosition(0, 4)
                 .withWidget(BuiltInWidgets.kGraph)
-                .withProperties(Map.of("min", -NEO_MAX_RPM, "max", NEO_MAX_RPM)) // Doesn't seem to do anything.
                 .getEntry();
+
+        // Shuffleboard.getTab("Diagnostics")
+        //         .add("Bottom Encoder Velocity", 0)
+        //         .withSize(2, 2)
+        //         .withPosition(2, 4)
+        //         .withWidget(BuiltInWidgets.kGraph)
+        //         .getEntry();
     }
 
     public double getVelocity(MotorPlacement motorPlacement) {
