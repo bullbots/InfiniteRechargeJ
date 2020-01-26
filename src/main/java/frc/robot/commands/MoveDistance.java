@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.subsystems.Drivetrain;
 
-public class MotionMagic extends CommandBase {
+public class MoveDistance extends CommandBase {
   /**
-   * Creates a new MotionMagic.
+   * Creates a new MoveDistance.
    */
   private Drivetrain drivetrain;
   private int targetDistance;
@@ -21,7 +21,7 @@ public class MotionMagic extends CommandBase {
 
   private int allowedError = 100;
 
-  public MotionMagic(Drivetrain drivetrain, int targetDistance) {
+  public MoveDistance(Drivetrain drivetrain, int targetDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     this.targetDistance = targetDistance;
