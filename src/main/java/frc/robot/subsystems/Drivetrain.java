@@ -102,11 +102,16 @@ public class Drivetrain extends SubsystemBase {
  * @param y This is the y value of the robot
  * @param z This is the z value of the robot
  */
-  public void diffDrive(double x, double y, double z){
-    x = DeadBand(x);
-    y = DeadBand(y);
-    z = DeadBand(z);
-    drive.driveCartesian(y, x, z);
+  public void diffDrive(double y, double x, double z){
+    double yStick = DeadBand(y);
+    double xStick = DeadBand(x);
+    double zStick = DeadBand(z);
+    // Caution!!! xStick gets mapped to ySpeed and vice versa. Forward direction is X.
+    drive.driveCartesian(
+            xStick,  // ySpeed: The robot's speed along the Y axis [-1.0..1.0]. Right is positive.
+            yStick,  // xSpeed: The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+            zStick  // zRotation: The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
+    );
   }
 
   public double DeadBand(double num) {
