@@ -35,11 +35,7 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    double y = -joyY.getAsDouble(); // Because Negative is forward on the joysticks
-    double x = -joyX.getAsDouble();
-    double z = joyZ.getAsDouble();   
-
-    m_drivetrain.diffDrive(y, z, x);
+    m_drivetrain.diffDrive(joyY.getAsDouble(), joyX.getAsDouble(), joyZ.getAsDouble());
   }
 
   @Override
