@@ -19,8 +19,8 @@ public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private WPI_TalonSRX intake_motor;
-  private WPI_TalonSRX wheel_motor;
+  public WPI_TalonSRX intake_motor;
+  public WPI_TalonSRX wheel_motor;
 
 
   private NetworkTableEntry intakeVelocity;
