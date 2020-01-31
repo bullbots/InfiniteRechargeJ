@@ -51,10 +51,6 @@ public class MoveDistance extends CommandBase {
     double[] position = this.drivetrain.getPosition();
     if (position[0] == position[1])
       currentPosition = position[0];
-    if (Math.abs(currentPosition - targetDistance) == allowedError) {
-      return true;
-    } else {
-      return false;
-    }
+    return Math.abs(currentPosition - targetDistance) == allowedError;
   }
 }

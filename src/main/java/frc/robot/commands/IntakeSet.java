@@ -17,9 +17,9 @@ public class IntakeSet extends CommandBase {
    */
   private Intake intake;
 
-  boolean setIntake; // True = On, False = Off
+  boolean isRunning; // True = On, False = Off
   double intakeSpeed;
-  public IntakeSet(boolean setIntake) {
+  public IntakeSet(boolean isRunning) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,7 +31,7 @@ public class IntakeSet extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (setIntake) {
+    if (isRunning) {
       intake.setintake(intakeSpeed);
     } else {
       intake.setintake(0);
