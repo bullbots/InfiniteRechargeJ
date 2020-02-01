@@ -118,6 +118,12 @@ public class Drivetrain extends SubsystemBase {
     return new double[] {left_master_position, right_master_position};
   } 
 
+  public double[] setPositionZero() {
+    left_master_talon.setSelectedSensorPosition(0);
+    right_master_talon.setSelectedSensorPosition(0);
+    return new double[] {left_master_position, right_master_position};
+  }
+
   public void stop(){
     left_master_talon.stopMotor();
     right_master_talon.stopMotor();

@@ -32,6 +32,7 @@ public class MoveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.setPositionZero();
     drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
