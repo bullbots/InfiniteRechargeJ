@@ -49,3 +49,30 @@ public class MoveTimed extends WaitCommand {
     return false;
   }
 }
+
+
+/*
+
+
+
+                     __
+                    / /
+                   / /
+                  / /
+                 | |
+                 | |
+         ________|_|________
+        /                   \
+       /  _               _  \
+      /  |_|            _|_|_ \
+     |  |___|          |_|_|_| |
+     |   |_|             |_|   |
+     |        _________        |
+      \      /         \      /
+       \    /           \    /
+        \__/             \__/
+
+
+    This is a gameing controler. It isn't the bset but my friend wanted me to make one
+  Made By Triston Van Wyk
+*/
