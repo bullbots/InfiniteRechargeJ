@@ -3,7 +3,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -15,13 +14,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.Constants;
+import frc.robot.util.SafeTalonSRX;
 
 public class Drivetrain extends SubsystemBase {
 
-  private WPI_TalonSRX left_master_talon;
-  private WPI_TalonSRX left_slave_talon;
-  private WPI_TalonSRX right_master_talon;
-  private WPI_TalonSRX right_slave_talon;
+  private SafeTalonSRX left_master_talon;
+  private SafeTalonSRX left_slave_talon;
+  private SafeTalonSRX right_master_talon;
+  private SafeTalonSRX right_slave_talon;
   private MecanumDrive drive;
 
   private double left_master_position;
@@ -31,10 +31,10 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry rightMasterVelocity;
   
   public Drivetrain() {
-    left_master_talon = new WPI_TalonSRX(Constants.LEFT_MASTER_PORT);
-    left_slave_talon = new WPI_TalonSRX(Constants.LEFT_SLAVE_PORT);
-    right_master_talon = new WPI_TalonSRX(Constants.RIGHT_MASTER_PORT);
-    right_slave_talon = new WPI_TalonSRX(Constants.RIGHT_SLAVE_PORT);
+    left_master_talon = new SafeTalonSRX(Constants.LEFT_MASTER_PORT);
+    left_slave_talon = new SafeTalonSRX(Constants.LEFT_SLAVE_PORT);
+    right_master_talon = new SafeTalonSRX(Constants.RIGHT_MASTER_PORT);
+    right_slave_talon = new SafeTalonSRX(Constants.RIGHT_SLAVE_PORT);
 
     left_master_talon.configFactoryDefault();
     left_slave_talon.configFactoryDefault();
