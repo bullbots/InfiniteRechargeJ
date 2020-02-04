@@ -21,7 +21,7 @@ public final class Constants {
     public static int BOTTOM_SHOOTER_PORT = 7;
 
     // Climb Ports
-    public static int CLIMB_TALON = 6;
+    public static int CLIMB_SPARK_PORT = 6;
 
 
     /**
@@ -67,8 +67,13 @@ public final class Constants {
     /**
      * ALL CLIMB RELATED CONSTANTS GO HERE
      */
+  
+    public static double CLIMB_SPARK_FF = 0;
+    public static double CLIMB_SPARK_P = 0;
+    public static double CLIMB_SPARK_I = 0;
+    public static double CLIMB_SPARK_D = 0;
 
-
+  
      /**
       * MISCELLANEOUS CONSTANTS
       */

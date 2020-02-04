@@ -185,3 +185,19 @@ public class Shooter extends SubsystemBase {
         bottomVelocity.setDouble(getVelocity(MotorPlacement.BOTTOM));
     }
 }
+/*
+
+
+             ___________
+            |           |
+            |___________|
+            |   |   |   |
+            |   |___|   |
+            |           |
+            |___________|
+
+            
+    This is suposed to be minecraft chest
+Made by Triston Van Wyk
+
+*/
