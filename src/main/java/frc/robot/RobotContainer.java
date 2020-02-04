@@ -42,7 +42,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> stick.getY(),
+      () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
       () -> stick.getX(),
       () -> stick.getZ()
     ));
@@ -78,3 +78,30 @@ public class RobotContainer {
     // intake.stop();
   }
 }
+/*
+This is a 16 wheeler 
+|_|______|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |  ||  | |
+     ||
+     ||
+     ||
+     || 
+|_|__||__|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |      | |
+This is #3 in the car series.
+Made by Triston Van Wyk
+*/ 

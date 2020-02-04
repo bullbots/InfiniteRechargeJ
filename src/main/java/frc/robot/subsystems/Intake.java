@@ -32,10 +32,15 @@ public class Intake extends SubsystemBase {
     wheel_motor = new WPI_TalonSRX(Constants.INTAKE_Wheel_PORT);
   }
 
+  /** This sets teh intake motor
+   * @param val This is a value that sets the motor
+   */
   public void setintake(double val){
     intake_motor.set(val);
   }
-
+/**This sets the value of the intake wheel
+ * @param val
+ */
   public void setwheel(double val){
     wheel_motor.set(val);
   }

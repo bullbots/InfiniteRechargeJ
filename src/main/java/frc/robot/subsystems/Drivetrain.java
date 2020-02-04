@@ -24,6 +24,9 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX right_slave_talon;
   private MecanumDrive drive;
 
+  private double left_master_position;
+  private double right_master_position;
+
   private NetworkTableEntry leftMasterVelocity;
   private NetworkTableEntry rightMasterVelocity;
   
@@ -54,6 +57,7 @@ public class Drivetrain extends SubsystemBase {
 
     drive = new MecanumDrive(left_master_talon, left_slave_talon, right_master_talon, right_slave_talon);
     configurePID();
+    configureMotionMagic();
     configureShuffleBoard();
   }
 
@@ -67,6 +71,14 @@ public class Drivetrain extends SubsystemBase {
     right_master_talon.config_kP(0, Constants.RIGHT_MASTER_P);
     right_master_talon.config_kI(0, Constants.RIGHT_MASTER_I);
     right_master_talon.config_kD(0, Constants.RIGHT_MASTER_D);
+  }
+
+  private void configureMotionMagic() {
+    left_master_talon.configMotionCruiseVelocity(Constants.LEFT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    left_master_talon.configMotionAcceleration(Constants.LEFT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
+    
+    right_master_talon.configMotionCruiseVelocity(Constants.RIGHT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    right_master_talon.configMotionAcceleration(Constants.RIGHT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
   }
 
   private void configureShuffleBoard() {
@@ -85,11 +97,21 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
-  public void diffDrive(double x, double y, double z){
-    x = DeadBand(x);
-    y = DeadBand(y);
-    z = DeadBand(z);
-    drive.driveCartesian(y, x, z);
+/** This sets up the differental drive
+ * @param x This is the x value of the robot
+ * @param y This is the y value of the robot
+ * @param z This is the z value of the robot
+ */
+  public void diffDrive(double y, double x, double z){
+    double yStick = DeadBand(y);
+    double xStick = DeadBand(x);
+    double zStick = DeadBand(z);
+    // Caution!!! xStick gets mapped to ySpeed and vice versa. Forward direction is X.
+    drive.driveCartesian(
+            xStick,  // ySpeed: The robot's speed along the Y axis [-1.0..1.0]. Right is positive.
+            yStick,  // xSpeed: The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+            zStick  // zRotation: The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
+    );
   }
 
   public double DeadBand(double num) {
@@ -100,6 +122,17 @@ public class Drivetrain extends SubsystemBase {
       return num;
     }
 
+  public double[] getPosition() {
+    left_master_position = left_master_talon.getSelectedSensorPosition();
+    right_master_position = right_master_talon.getSelectedSensorPosition();
+    return new double[] {left_master_position, right_master_position};
+  } 
+
+  public double[] setPositionZero() {
+    left_master_talon.setSelectedSensorPosition(0);
+    right_master_talon.setSelectedSensorPosition(0);
+    return new double[] {left_master_position, right_master_position};
+  }
 
   public void stop(){
     left_master_talon.stopMotor();
@@ -111,13 +144,12 @@ public class Drivetrain extends SubsystemBase {
     leftMasterVelocity.setDouble(left_master_talon.getSelectedSensorVelocity());
   }
 
-  /* Sets Drivetrain control mode and magnitudes for left and right side
 
-    Args:
-        control_mode (WPI_TalonSRX.ControlMode): Control Mode for both motor controllers
-        left_magnitude (float): Magnitude for the left side
-        right_magnitude (float): Magnitude for the right side
-  */
+  /** Sets Drivetrain control mode and magnitudes for left and right side
+   * @param control_mode This is the control mode
+   * @param left_magnitude This is the left side magnitude
+   * @param right_magnitude This is the rigth side magnitude
+   */
   public void set(ControlMode control_mode, float left_magnitude, float right_magnitude) {
     left_master_talon.set(control_mode, left_magnitude);
     right_master_talon.set(control_mode, right_magnitude);

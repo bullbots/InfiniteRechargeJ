@@ -29,27 +29,19 @@ public class JoystickDrive extends CommandBase {
     addRequirements(m_drivetrain);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double y = -joyY.getAsDouble(); // Because Negative is forward on the joysticks
-    double x = -joyX.getAsDouble();
-    double z = joyZ.getAsDouble();   
-
-    m_drivetrain.diffDrive(y, z, x);
+    m_drivetrain.diffDrive(joyY.getAsDouble(), joyX.getAsDouble(), joyZ.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

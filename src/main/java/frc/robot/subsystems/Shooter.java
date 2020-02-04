@@ -99,6 +99,10 @@ public class Shooter extends SubsystemBase {
         //         .getEntry();
     }
 
+    /**This gets the velocity of the motors
+     * @param motorPlacement This is where the motor is placed either at the top or bottem
+     * @return curVal This retuns the curent velocity of the shooter motors
+     */
     public double getVelocity(MotorPlacement motorPlacement) {
         double curVal = 0;
         if (Robot.isReal()) {
@@ -152,6 +156,10 @@ public class Shooter extends SubsystemBase {
         return new double[] {top_vel, bottom_vel};
     }
 
+    /** This sets the velocity of the top abd bottem shooter motors
+     * @param top_vel This is the velocity of the top motor
+     * @param bottom_vel This is the velocity of the bottem mtor
+     */
     public void set(double top_vel, double bottom_vel){
         top_pid_controller.setReference(top_vel, ControlType.kVelocity);
         bottom_pid_controller.setReference(bottom_vel, ControlType.kVelocity);
