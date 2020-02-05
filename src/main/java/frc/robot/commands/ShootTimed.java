@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import java.sql.Time;
-
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ShootVelocity;
 import frc.robot.subsystems.Shooter;
