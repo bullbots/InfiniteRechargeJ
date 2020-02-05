@@ -16,6 +16,10 @@ import static frc.robot.Constants.NEO_MAX_RPM;
 
 public class ClimbDistance extends CommandBase {
   private CANSparkMaxLowLevel canSparkMaxLowLevel;
+  private double currentPosition;
+  private int targetDistance;
+
+  private int allowedError = 100;
   /**
    * Creates a new ClimbDistance.
    */
@@ -38,7 +42,7 @@ public class ClimbDistance extends CommandBase {
     // Min  function followed by a Max clamps the value.
     climb = Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, climb));
 
-    this.climb.set(climb);
+    this.climb.setReference(climb);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,7 +54,15 @@ public class ClimbDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double[] position = climb.getvelocities();
+    if (position[0] == position[1])
+      currentPosition = position[0];
+    if (Math.abs(currentPosition - targetDistance) == allowedError) {
+      return true;
+
+    } else {
+      return false;
+    }
   }
 }
 

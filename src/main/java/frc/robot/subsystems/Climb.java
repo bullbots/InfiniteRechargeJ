@@ -105,27 +105,16 @@ public class Climb extends SubsystemBase {
      * @param magnitude This the magnitude of the motor
      */
     public void set( ControlMode control_mode, double magnitude) {
-        climb_talon.set(control_mode, magnitude);
+        climb_spark.set(control_mode, magnitude);
     }
 
     /** This tells the motor what set it's speed to
      * @param speed This is the speed of the motor
      */
     public void set(double speed) {
-        climb_talon.set(speed);
+        climb_spark.set(speed);
     }
 
-    /** This sets the mode, demand and demand type for the climb motors
-     * @param mode This is the mode of the control mode
-     * @param demand0 This is the demand 1 
-     * @param demand1Type This is the type of demand for demand 2
-     * @param demand1 This is demand 2
-     */
-    public void set(ControlMode mode, double demand0, DemandType demand1Type, double demand1) {
-        climb_talon.set(mode, demand0, demand1Type, demand1);
-    }
-    return curVal;
-}
 
   public double[] getvelocities(){
     double climb_vel = climb_encoder.getVelocity();
@@ -133,7 +122,7 @@ public class Climb extends SubsystemBase {
     return new double[] {climb_vel};
   }
   
-  public void set(double climb_vel){
+  public void setReference(double climb_vel){
     climb_pid_controller.setReference(climb_vel, ControlType.kVelocity);
   }
 

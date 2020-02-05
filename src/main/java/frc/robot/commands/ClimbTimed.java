@@ -36,7 +36,7 @@ public class ClimbTimed extends WaitCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.climb.set(ControlMode.PercentOutput, 1, 1);
+    climb.set(ControlMode.PercentOutput, 1, 1);
   }
 
   // Called once the command ends or is interrupted.
