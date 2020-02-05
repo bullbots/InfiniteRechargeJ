@@ -27,7 +27,7 @@ public class RobotContainer {
   public static JoystickButton trigger = new JoystickButton(stick, 1);
 
   // Subsystems
-  // private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
   // private final Intake intake = new Intake();
 
@@ -49,6 +49,7 @@ public class RobotContainer {
 
     // shooter.setDefaultCommand(new ShooterTest(shooter));
     // intake.setDefaultCommand(new IntakeTest(intake));
+    shooter.setDefaultCommand(new ShooterTestCommand(shooter));
   }
 
   /**
