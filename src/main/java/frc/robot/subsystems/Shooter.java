@@ -77,6 +77,11 @@ public class Shooter extends SubsystemBase {
         bottom_pid_controller.setD(Constants.SHOOTER_D);
     }
 
+    public void stop() {
+        top_shooter.stopMotor();
+        bottom_shooter.stopMotor();
+    }
+
     private void configureShuffleBoard() {
         topVelocity = Shuffleboard.getTab("Diagnostics")
                 .add("Top Encoder Velocity", 0)
