@@ -49,7 +49,6 @@ public class RobotContainer {
 
     // shooter.setDefaultCommand(new ShooterTest(shooter));
     // intake.setDefaultCommand(new IntakeTest(intake));
-    shooter.setDefaultCommand(new ShooterTestCommand(shooter));
   }
 
   /**

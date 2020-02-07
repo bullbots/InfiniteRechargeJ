@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
     private int curTopVelIndex = 0;
     private int curBottomVelIndex = velocityRange.size() / 2;
 
-    private enum MotorPlacement {
+    public enum MotorPlacement {
         BOTTOM, TOP
     }
 

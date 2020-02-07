@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.MotorPlacement;
 
 
 public class ShooterTestCommand extends CommandBase {
@@ -29,6 +30,10 @@ public class ShooterTestCommand extends CommandBase {
   NetworkTableEntry bottom_motor_current;
   NetworkTableEntry input_top_motor;
   NetworkTableEntry input_bottom_motor;
+
+  double inputTopVelocity;
+  double inputBottomVelocity;
+
   public ShooterTestCommand(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
@@ -36,51 +41,51 @@ public class ShooterTestCommand extends CommandBase {
 
     top_motor_velocity = Shuffleboard.getTab("Shooter")
         .add("Top Motor Velocity", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition() Set later so there are no conflictions
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
     bottom_motor_velocity = Shuffleboard.getTab("Shooter")
         .add("Bottom Motor Velocity", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
 
     top_motor_position = Shuffleboard.getTab("Shooter")
         .add("Top Motor Position", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
     bottom_motor_position = Shuffleboard.getTab("Shooter")
         .add("Bottom Motor Position", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
 
     top_motor_current = Shuffleboard.getTab("Shooter")
         .add("Top Motor Current", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
     bottom_motor_current = Shuffleboard.getTab("Shooter")
         .add("Bottom Motor Current", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .withWidget(BuiltInWidgets.kGraph)
         .getEntry();
 
     input_top_motor = Shuffleboard.getTab("Shooter")
         .add("Top Motor Input Speed (RPM)", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .getEntry();
     input_bottom_motor = Shuffleboard.getTab("Shooter")
         .add("Bottom Motor Input Speed (RPM)", 0)
-        .withSize(2,2)
+        .withSize(3,3)
         // .withPosition()
         .getEntry();
   }
@@ -95,19 +100,36 @@ public class ShooterTestCommand extends CommandBase {
   public void execute() {
     if ((int)input_top_motor.getNumber(0) > 5500) {
       input_top_motor.setNumber(5500);
+       inputTopVelocity = (int)input_top_motor.getNumber(0); // This should just set it to 5500
     } else {
-      input_top_motor.getNumber(0);
+      inputTopVelocity = (int)input_top_motor.getNumber(0);
     }
     if ((int)input_bottom_motor.getNumber(0) > 5500) {
       input_bottom_motor.setNumber(5500);
     } else {
       input_bottom_motor.getNumber(0);
     }
+
+    inputTopVelocity = (int)input_top_motor.getNumber(0);
+    inputBottomVelocity = (int)input_bottom_motor.getNumber(0);
+
+    top_motor_velocity.setNumber(shooter.getVelocity(MotorPlacement.TOP));
+    bottom_motor_velocity.setNumber(shooter.getVelocity(MotorPlacement.BOTTOM));
+
+    shooter.set(inputTopVelocity, inputBottomVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    top_motor_velocity.setNumber(0);
+    bottom_motor_velocity.setNumber(0);
+    top_motor_position.setNumber(0);
+    bottom_motor_velocity.setNumber(0);
+    top_motor_current.setNumber(0);
+    bottom_motor_current.setNumber(0);
+    input_top_motor.setNumber(0);
+    input_bottom_motor.setNumber(0);
   }
 
   // Returns true when the command should end.
