@@ -19,7 +19,7 @@ public class TurnDistance extends CommandBase {
   private int targetDistance;
   private double currentPosition;
 
-  private int allowedErroe = 100;
+  private int allowedError = 100;
 
   public TurnDistance(Drivetrain drivetrain, int targetDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,13 +32,13 @@ public class TurnDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.setPositionZero();
-    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    drivetrain.setPositionZero();
+    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,9 +50,7 @@ public class TurnDistance extends CommandBase {
   @Override
   public boolean isFinished() {
     double[] position = this.drivetrain.getPosition();
-    if (position[0] == position[1])
-      currentPosition = position[0];
-    if (Math.abs(currentPosition - targetDistance) == allowedErroe) {
+    if (Math.abs(currentPosition - targetDistance) <= allowedError) {
       return true;
     } else{
       return false;
