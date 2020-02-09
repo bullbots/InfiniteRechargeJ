@@ -23,6 +23,9 @@ public final class Constants {
     // Climb Ports
     public static int CLIMB_TALON = 6;
 
+    // Control panle ports
+    public static int CONTROL_PANLE_PORT = 9;
+
 
     /**
      * ALL DRIVETRAIN RELATED CONSTANTS GO HERE
@@ -68,6 +71,15 @@ public final class Constants {
      * ALL CLIMB RELATED CONSTANTS GO HERE
      */
 
+
+     /**
+      * ALL CONTROL PANEL CONSTANTS GO HERE
+      */
+
+      public static double CONTROL_FF = 0;
+      public static double CONTROL_P = 5e-5;
+      public static double CONTROL_I = 1e-6;
+      public static double CONTROL_D = 0;
 
      /**
       * MISCELLANEOUS CONSTANTS
