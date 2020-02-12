@@ -7,41 +7,43 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
-public class JoystickDrive extends CommandBase {
-  
-  private Drivetrain m_drivetrain;
-  private DoubleSupplier joyY;
-  private DoubleSupplier joyX;
-  private DoubleSupplier joyZ;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, DoubleSupplier joyZ) {
-    m_drivetrain = drivetrain;
-    this.joyY = joyY;
-    this.joyX = joyX;
-    this.joyZ = joyZ;
+public class ShootVelocity extends CommandBase {
+  /**
+   * Creates a new ShootVelocity.
+   */
+  private Shooter shooter;
 
-    addRequirements(m_drivetrain);
+  double topVelocity;
+  double bottomVelocity;
+  public ShootVelocity(Shooter shooter, double topVelocity, double bottomVelocity) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.shooter = shooter;
+
+    addRequirements(this.shooter);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.diffDrive(joyY.getAsDouble(), joyX.getAsDouble(), joyZ.getAsDouble());
+    shooter.set(topVelocity, bottomVelocity);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.stop();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

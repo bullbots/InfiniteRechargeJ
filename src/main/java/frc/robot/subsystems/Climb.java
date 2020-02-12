@@ -2,17 +2,17 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.SafeTalonSRX;
 
 public class Climb extends SubsystemBase {
-    private WPI_TalonSRX climb_talon;
+    private SafeTalonSRX climb_talon;
     
     public Climb() {
-        climb_talon = new WPI_TalonSRX(Constants.CLIMB_TALON);
+        climb_talon = new SafeTalonSRX(Constants.CLIMB_TALON);
     }
 
     /** This tells the code to set the climb talon's contol mode and magnitude

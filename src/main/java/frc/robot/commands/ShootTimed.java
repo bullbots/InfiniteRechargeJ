@@ -7,50 +7,47 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.ShootVelocity;
+import frc.robot.subsystems.Shooter;
 
-public class MoveDistance extends CommandBase {
+public class ShootTimed extends WaitCommand {
   /**
-   * Creates a new MoveDistance.
+   * Creates a new ShootTimed.
    */
-  private Drivetrain drivetrain;
-  private int targetDistance;
-  private double currentPosition;
+  private Shooter shooter;
 
-  private int allowedError = 100;
+  double topVelocity = 5500;
+  double bottomVelocity = 5500;
 
-  public MoveDistance(Drivetrain drivetrain, int targetDistance) {
+  public ShootTimed(Shooter shooter, double seconds) {
+    super(seconds);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drivetrain = drivetrain;
-    this.targetDistance = targetDistance;
+    this.shooter = shooter;
 
-    addRequirements(drivetrain);
+    addRequirements(this.shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.setPositionZero();
-    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    shooter.set(topVelocity, bottomVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double[] positions = this.drivetrain.getPosition();
-
-    return Math.abs(positions[0] - targetDistance) <= allowedError && Math.abs(positions[1] - targetDistance) <= allowedError;
+    return false;
   }
 }
