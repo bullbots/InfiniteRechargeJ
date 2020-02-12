@@ -7,39 +7,45 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.DrivetrainFalcon;
+import frc.robot.commands.ShootVelocity;
+import frc.robot.subsystems.Shooter;
 
-public class MoveTimed extends WaitCommand {
-  private DrivetrainFalcon drivetrain;
+public class ShootTimed extends WaitCommand {
   /**
-   * Creates a new MoveTimed.
+   * Creates a new ShootTimed.
    */
-  public MoveTimed(DrivetrainFalcon drivetrain, double seconds) {
+  private Shooter shooter;
+
+  double topVelocity = 5500;
+  double bottomVelocity = 5500;
+
+  public ShootTimed(Shooter shooter, double seconds) {
     super(seconds);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drivetrain = drivetrain;
+    this.shooter = shooter;
 
-
-    addRequirements(this.drivetrain);
+    addRequirements(this.shooter);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.set(ControlMode.PercentOutput, 1, 1);
+    shooter.set(topVelocity, bottomVelocity);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.set(0, 0);
+    shooter.stop();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

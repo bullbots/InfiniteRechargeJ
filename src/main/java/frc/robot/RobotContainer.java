@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
@@ -22,12 +23,12 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // User Input
-  public final Joystick stick = new Joystick(0);
-
+  public static Joystick stick = new Joystick(0);
+  
   // Subsystems
   // private final Shooter shooter = new Shooter();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Intake intake = new Intake();
+  private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
+  // private final Intake intake = new Intake();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -36,16 +37,18 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> stick.getY(),
-      () -> stick.getX(),
-      () -> stick.getZ()
+      () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
+      () -> stick.getX()
     ));
 
+    // drivetrain.setDefaultCommand(new Music(drivetrain));
+
     // shooter.setDefaultCommand(new ShooterTest(shooter));
-    intake.setDefaultCommand(new IntakeTest(intake));
+    // intake.setDefaultCommand(new IntakeTest(intake));
   }
 
   /**
@@ -55,6 +58,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    // trigger.whileHeld(new ShooterTest());
   }
 
 
@@ -63,13 +68,42 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    
+  public Command getAutonomousCommand() {
+
+    return new Music(drivetrain);
   }
 
   public void stopAllSubsystems(){
     drivetrain.stop();
-    intake.stop();
+    // intake.stop();
   }
 }
+
+
+/*
+This is a 16 wheeler 
+|_|______|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |  ||  | |
+     ||
+     ||
+     ||
+     || 
+|_|__||__|_|
+| | |  | | |
+    |  |
+    |  |
+    |  |
+    |  |
+    |  |
+|_|_|__|_|_|
+| |      | |
+This is #3 in the car series.
+Made by Triston Van Wyk
+*/ 

@@ -10,46 +10,37 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainFalcon;
 import frc.robot.RobotContainer;
 
 public class JoystickDrive extends CommandBase {
   
-  private Drivetrain m_drivetrain;
+  private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
-  private DoubleSupplier joyZ;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, DoubleSupplier joyZ) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
-    this.joyZ = joyZ;
 
     addRequirements(m_drivetrain);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double y = -joyY.getAsDouble(); // Because Negative is forward on the joysticks
-    double x = -joyX.getAsDouble();
-    double z = joyZ.getAsDouble();   
-
-    m_drivetrain.diffDrive(y, z, x);
+    System.out.println(joyY.getAsDouble());
+    m_drivetrain.arcadeDrive(joyY.getAsDouble(), joyX.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

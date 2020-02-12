@@ -7,41 +7,50 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainFalcon;
 
-public class MoveTimed extends WaitCommand {
-  private DrivetrainFalcon drivetrain;
+public class MoveDistance extends CommandBase {
   /**
-   * Creates a new MoveTimed.
+   * Creates a new MoveDistance.
    */
-  public MoveTimed(DrivetrainFalcon drivetrain, double seconds) {
-    super(seconds);
+  private DrivetrainFalcon drivetrain;
+  private int targetDistance;
+
+  private int allowedError = 100;
+
+  public MoveDistance(DrivetrainFalcon drivetrain, int targetDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    this.targetDistance = targetDistance;
 
-
-    addRequirements(this.drivetrain);
+    addRequirements(drivetrain);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.resetEncoders();
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.set(ControlMode.PercentOutput, 1, 1);
+    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drivetrain.set(0, 0);
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double[] positions = drivetrain.getPositions();
+
+    return Math.abs(positions[0] - targetDistance) <= allowedError && Math.abs(positions[1] - targetDistance) <= allowedError;
   }
 }
