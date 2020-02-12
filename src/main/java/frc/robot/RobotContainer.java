@@ -24,11 +24,10 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotContainer {
   // User Input
   public static Joystick stick = new Joystick(0);
-  public static JoystickButton trigger = new JoystickButton(stick, 1);
-
+  
   // Subsystems
   // private final Shooter shooter = new Shooter();
-  private final Drivetrain drivetrain = new Drivetrain();
+  private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
   // private final Intake intake = new Intake();
 
   /**
@@ -43,8 +42,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
-      () -> stick.getX(),
-      () -> stick.getZ()
+      () -> stick.getX()
     ));
 
     // shooter.setDefaultCommand(new ShooterTest(shooter));
@@ -68,10 +66,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    
-  }
+  // public Music getAutonomousCommand() {
+  //   // An ExampleCommand will run in autonomous
+  //   return new Music(drivetrain);
+  // }
 
   public void stopAllSubsystems(){
     // drivetrain.stop();

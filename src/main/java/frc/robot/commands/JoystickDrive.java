@@ -11,20 +11,19 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainFalcon;
 import frc.robot.RobotContainer;
 
 public class JoystickDrive extends CommandBase {
   
-  private Drivetrain m_drivetrain;
+  private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
-  private DoubleSupplier joyZ;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, DoubleSupplier joyZ) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
-    this.joyZ = joyZ;
 
     addRequirements(m_drivetrain);
   }
@@ -35,7 +34,8 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    m_drivetrain.diffDrive(joyY.getAsDouble(), joyX.getAsDouble(), joyZ.getAsDouble());
+    System.out.println(joyY.getAsDouble());
+    m_drivetrain.arcadeDrive(joyY.getAsDouble(), joyX.getAsDouble());
   }
 
   @Override
