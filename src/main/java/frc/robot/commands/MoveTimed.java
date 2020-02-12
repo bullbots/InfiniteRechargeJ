@@ -10,14 +10,14 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainFalcon;
 
 public class MoveTimed extends WaitCommand {
-  private Drivetrain drivetrain;
+  private DrivetrainFalcon drivetrain;
   /**
    * Creates a new MoveTimed.
    */
-  public MoveTimed(Drivetrain drivetrain, double seconds) {
+  public MoveTimed(DrivetrainFalcon drivetrain, double seconds) {
     super(seconds);
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
@@ -32,12 +32,12 @@ public class MoveTimed extends WaitCommand {
 
   @Override
   public void execute() {
-    this.drivetrain.set(ControlMode.PercentOutput, 1, 1);
+    drivetrain.set(ControlMode.PercentOutput, 1, 1);
   }
 
   @Override
   public void end(boolean interrupted) {
-    this.drivetrain.stop();
+    drivetrain.set(0, 0);
   }
 
   @Override

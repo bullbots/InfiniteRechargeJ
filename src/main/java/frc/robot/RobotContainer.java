@@ -45,6 +45,8 @@ public class RobotContainer {
       () -> stick.getX()
     ));
 
+    // drivetrain.setDefaultCommand(new Music(drivetrain));
+
     // shooter.setDefaultCommand(new ShooterTest(shooter));
     // intake.setDefaultCommand(new IntakeTest(intake));
   }
@@ -66,16 +68,18 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Music getAutonomousCommand() {
-  //   // An ExampleCommand will run in autonomous
-  //   return new Music(drivetrain);
-  // }
+  public Command getAutonomousCommand() {
+
+    return new Music(drivetrain);
+  }
 
   public void stopAllSubsystems(){
     drivetrain.stop();
     // intake.stop();
   }
 }
+
+
 /*
 This is a 16 wheeler 
 |_|______|_|

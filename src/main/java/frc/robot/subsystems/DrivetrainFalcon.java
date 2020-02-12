@@ -9,11 +9,13 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.util.SafeTalonFX;
+import frc.robot.util.NavX;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.music.Orchestra;
 
@@ -33,6 +35,7 @@ public class DrivetrainFalcon extends SubsystemBase {
   private final SafeTalonFX rightSlaveFalcon = new SafeTalonFX(Constants.RIGHT_SLAVE_PORT);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMasterFalcon, rightMasterFalcon);
+  private final NavX gyro = new NavX();
   public Orchestra orchestra;
 
   private NetworkTableEntry leftCurrent;
@@ -54,11 +57,9 @@ public class DrivetrainFalcon extends SubsystemBase {
     rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
     diffDrive.setRightSideInverted(false);
-
-    configureSmartDashboard();
+    diffDrive.setSafetyEnabled(false);
 
     orchestra = new Orchestra();
-
     orchestra.addInstrument(leftMasterFalcon);
     orchestra.addInstrument(rightMasterFalcon);
     orchestra.addInstrument(leftSlaveFalcon);
@@ -66,10 +67,32 @@ public class DrivetrainFalcon extends SubsystemBase {
 
     orchestra.loadMusic("test.chrp");
 
-    diffDrive.setSafetyEnabled(false);
+    configurePID();
+    configureMotionMagic();
+    configureSmartDashboard();
   }
 
-  public void configureSmartDashboard(){
+  private void configurePID(){
+    leftMasterFalcon.config_kF(0, Constants.LEFT_MASTER_FF);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_P);
+    leftMasterFalcon.config_kI(0, Constants.LEFT_MASTER_I);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_D);
+
+    rightMasterFalcon.config_kF(0, Constants.RIGHT_MASTER_FF);
+    rightMasterFalcon.config_kP(0, Constants.RIGHT_MASTER_P);
+    rightMasterFalcon.config_kI(0, Constants.RIGHT_MASTER_I);
+    rightMasterFalcon.config_kD(0, Constants.RIGHT_MASTER_D);
+  }
+
+  private void configureMotionMagic(){
+    leftMasterFalcon.configMotionCruiseVelocity(Constants.LEFT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    leftMasterFalcon.configMotionAcceleration(Constants.LEFT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
+    
+    rightMasterFalcon.configMotionCruiseVelocity(Constants.RIGHT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
+    rightMasterFalcon.configMotionAcceleration(Constants.RIGHT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
+  }
+
+  private void configureSmartDashboard(){
     leftCurrent = Shuffleboard.getTab("Drivetrain")
       .add("Left Current", 0)
       .withSize(2,2)
@@ -120,13 +143,68 @@ public class DrivetrainFalcon extends SubsystemBase {
     rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
   }
 
+  /**
+   * Moves the robot according to joystick input
+   * @param speed double
+   * @param rotation double
+   */
   public void arcadeDrive(double speed, double rotation){
     diffDrive.arcadeDrive(speed, rotation);
   }
 
+  /**
+   * Sets the encoder values back to zero
+   */
+  public void resetEncoders(){
+    leftMasterFalcon.setSelectedSensorPosition(0);
+    rightMasterFalcon.setSelectedSensorPosition(0);
+  }
+
+  /**
+   * 
+   * @return double array of positions [left, right]
+   */
+  public double[] getPositions(){
+    return new double[] {leftMasterFalcon.getSelectedSensorPosition(), rightMasterFalcon.getSelectedSensorPosition()};
+  }
+
+  /**
+   * 
+   * @return double array of velocities [left, right]
+   */
+  public double[] getVelocities() {
+    return new double[] {leftMasterFalcon.getSelectedSensorVelocity(), rightMasterFalcon.getSelectedSensorVelocity()};
+  }
+
+  /**
+   * Sets the left and right motors to a percent output
+   * @param leftPercent double
+   * @param rightPercent double
+   */
+  public void set(double leftPercent, double rightPercent){
+    leftMasterFalcon.set(leftPercent);
+    rightMasterFalcon.set(rightPercent);
+  }
+
+  /**
+   * Sets the left and right motors to a specified control mode
+   * @param controlMode ControlMode
+   * @param leftMagnitude double
+   * @param rightMagnitude double
+   */
+  public void set(ControlMode controlMode, double leftMagnitude, double rightMagnitude) {
+    leftMasterFalcon.set(controlMode, leftMagnitude);
+    rightMasterFalcon.set(controlMode, rightMagnitude);
+  }
+
+  /**
+   * Immediately stops the drivetrain, only use in emergencies
+   */
   public void stop(){
-    leftMasterFalcon.set(0);
-    rightMasterFalcon.set(0);
+    leftMasterFalcon.stopMotor();
+    leftSlaveFalcon.stopMotor();
+    rightMasterFalcon.stopMotor();
+    rightSlaveFalcon.stopMotor();
   }
 
 }
