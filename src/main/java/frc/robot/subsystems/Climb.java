@@ -97,15 +97,18 @@ public class Climb extends SubsystemBase {
                 case Climb:
                     curClimbIndex++;
                     break;
+              }
             }
+          }
+    return curVal;
         }
       
     /** This tells the code to set the climb talon's contol mode and magnitude
      * @param control_mode This is the controm mode of the motor
      * @param magnitude This the magnitude of the motor
      */
-    public void set( ControlMode control_mode, double magnitude) {
-        climb_spark.set(control_mode, magnitude);
+    public void set(ControlMode control_mode, double magnitude) {
+        climb_spark.set(magnitude);
     }
 
     /** This tells the motor what set it's speed to
