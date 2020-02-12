@@ -33,14 +33,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
 
-    // SmartDashboard.putNumber("Shooter F", Constants.SHOOTER_FF);
-    // SmartDashboard.putNumber("Shooter P", Constants.SHOOTER_P);
-    // SmartDashboard.putNumber("Shooter I", Constants.SHOOTER_I);
-    // SmartDashboard.putNumber("Shooter D", Constants.SHOOTER_D);
-
-    SmartDashboard.putNumber("Top Speed", 0);
-    SmartDashboard.putNumber("Bottom Speed", 0);
-    SmartDashboard.putNumber("Intake Speed", 0);
   }
 
   /**
@@ -57,7 +49,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    syncShuffleboard();
   }
 
   /**
@@ -121,9 +112,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-  }
-
-  private void syncShuffleboard(){
-
   }
 }

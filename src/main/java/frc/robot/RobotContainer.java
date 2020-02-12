@@ -72,7 +72,7 @@ public class RobotContainer {
   // }
 
   public void stopAllSubsystems(){
-    // drivetrain.stop();
+    drivetrain.stop();
     // intake.stop();
   }
 }
