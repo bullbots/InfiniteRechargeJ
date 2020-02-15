@@ -8,31 +8,23 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.util.SafeTalonFX;
 import frc.robot.util.NavX;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DrivetrainFalcon extends SubsystemBase {
 
   private final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT);
-  private final SafeTalonFX leftSlaveFalcon = new SafeTalonFX(Constants.LEFT_SLAVE_PORT);
   private final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT);
-  private final SafeTalonFX rightSlaveFalcon = new SafeTalonFX(Constants.RIGHT_SLAVE_PORT);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMasterFalcon, rightMasterFalcon);
   private final NavX gyro = new NavX();
@@ -47,32 +39,36 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightVelocity;
 
   public DrivetrainFalcon() {
-    leftSlaveFalcon.follow(leftMasterFalcon);
-    rightSlaveFalcon.follow(rightMasterFalcon);
+    if (Robot.isReal()) {
+      SafeTalonFX leftSlaveFalcon = new SafeTalonFX(Constants.LEFT_SLAVE_PORT);
+      SafeTalonFX rightSlaveFalcon = new SafeTalonFX(Constants.RIGHT_SLAVE_PORT);
 
-    leftMasterFalcon.setInverted(true);
-    leftSlaveFalcon.setInverted(true);
+      leftSlaveFalcon.follow(leftMasterFalcon);
+      rightSlaveFalcon.follow(rightMasterFalcon);
 
-    leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
-    rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+      leftMasterFalcon.setInverted(true);
+
+      leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+      rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
+
+      orchestra = new Orchestra();
+      orchestra.addInstrument(leftMasterFalcon);
+      orchestra.addInstrument(rightMasterFalcon);
+      orchestra.addInstrument(leftSlaveFalcon);
+      orchestra.addInstrument(rightSlaveFalcon);
+
+      orchestra.loadMusic("test.chrp");
+    }
 
     diffDrive.setRightSideInverted(false);
     diffDrive.setSafetyEnabled(false);
-
-    orchestra = new Orchestra();
-    orchestra.addInstrument(leftMasterFalcon);
-    orchestra.addInstrument(rightMasterFalcon);
-    orchestra.addInstrument(leftSlaveFalcon);
-    orchestra.addInstrument(rightSlaveFalcon);
-
-    orchestra.loadMusic("test.chrp");
 
     configurePID();
     configureMotionMagic();
     configureSmartDashboard();
   }
 
-  private void configurePID(){
+  private void configurePID() {
     leftMasterFalcon.config_kF(0, Constants.LEFT_MASTER_FF);
     leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_P);
     leftMasterFalcon.config_kI(0, Constants.LEFT_MASTER_I);
@@ -84,7 +80,7 @@ public class DrivetrainFalcon extends SubsystemBase {
     rightMasterFalcon.config_kD(0, Constants.RIGHT_MASTER_D);
   }
 
-  private void configureMotionMagic(){
+  private void configureMotionMagic() {
     leftMasterFalcon.configMotionCruiseVelocity(Constants.LEFT_MASTER_VELOCITY, Constants.kTIMEOUT_MS);
     leftMasterFalcon.configMotionAcceleration(Constants.LEFT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
     
@@ -92,55 +88,34 @@ public class DrivetrainFalcon extends SubsystemBase {
     rightMasterFalcon.configMotionAcceleration(Constants.RIGHT_MASTER_ACCELERATION, Constants.kTIMEOUT_MS);
   }
 
-  private void configureSmartDashboard(){
-    leftCurrent = Shuffleboard.getTab("Drivetrain")
-      .add("Left Current", 0)
-      .withSize(2,2)
-      .withPosition(0, 0)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-    leftPosition = Shuffleboard.getTab("Drivetrain")
-      .add("Left Position", 0)
-      .withSize(2,2)
-      .withPosition(2, 0)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-    leftVelocity = Shuffleboard.getTab("Drivetrain")
-      .add("Left Velocity", 0)
-      .withSize(2,2)
-      .withPosition(4, 0)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-
-    rightCurrent = Shuffleboard.getTab("Drivetrain")
-      .add("Right Current", 0)
-      .withSize(2,2)
-      .withPosition(0, 2)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-    rightPosition = Shuffleboard.getTab("Drivetrain")
-      .add("Right Position", 0)
-      .withSize(2,2)
-      .withPosition(2, 2)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-    rightVelocity = Shuffleboard.getTab("Drivetrain")
-      .add("Right Velocity", 0)
-      .withSize(2,2)
-      .withPosition(4, 2)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
+  private void configureSmartDashboard() {
+    leftCurrent = generateEntry("Left Current", 0, 0);
+    leftPosition = generateEntry("Left Position", 2, 0);
+    leftVelocity = generateEntry("Left Velocity", 4, 0);
+    rightCurrent = generateEntry("Right Current", 0, 2);
+    rightPosition = generateEntry("Right Position", 2, 2);
+    rightVelocity = generateEntry("Right Velocity", 4, 2);
   }
 
   @Override
   public void periodic() {
-    leftCurrent.setNumber(leftMasterFalcon.getStatorCurrent());
-    leftPosition.setNumber(leftMasterFalcon.getSelectedSensorPosition());
-    leftVelocity.setNumber(leftMasterFalcon.getSelectedSensorVelocity());
+    if (Robot.isReal()) {
+      leftCurrent.setNumber(leftMasterFalcon.getStatorCurrent());
+      leftPosition.setNumber(leftMasterFalcon.getSelectedSensorPosition());
+      leftVelocity.setNumber(leftMasterFalcon.getSelectedSensorVelocity());
 
-    rightCurrent.setNumber(rightMasterFalcon.getStatorCurrent());
-    rightPosition.setNumber(rightMasterFalcon.getSelectedSensorPosition());
-    rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
+      rightCurrent.setNumber(rightMasterFalcon.getStatorCurrent());
+      rightPosition.setNumber(rightMasterFalcon.getSelectedSensorPosition());
+      rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
+    } else {
+      leftCurrent.setNumber(0.0);
+      leftPosition.setNumber(0.0);
+      leftVelocity.setNumber(0.0);
+
+      rightCurrent.setNumber(0.0);
+      rightPosition.setNumber(0.0);
+      rightVelocity.setNumber(0.0);
+    }
   }
 
   /**
@@ -202,9 +177,18 @@ public class DrivetrainFalcon extends SubsystemBase {
    */
   public void stop(){
     leftMasterFalcon.stopMotor();
-    leftSlaveFalcon.stopMotor();
     rightMasterFalcon.stopMotor();
-    rightSlaveFalcon.stopMotor();
   }
 
+  /**
+   * Helper function to generate NetworkTableEntries
+   */
+  private NetworkTableEntry generateEntry(String entryName, int columnIndex, int rowIndex) {
+    return Shuffleboard.getTab("Drivetrain")
+            .add(entryName, 0)
+            .withSize(2,2)
+            .withPosition(columnIndex, rowIndex)
+            .withWidget(BuiltInWidgets.kGraph)
+            .getEntry();
+  }
 }
