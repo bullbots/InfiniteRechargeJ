@@ -33,7 +33,7 @@ public class ControlPanelSpin extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double control = SmartDashboard.getNumber("Control Motor Speed", 0);
+    double control = 1;
 
     control =Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, control));
   }

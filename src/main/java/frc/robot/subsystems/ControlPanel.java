@@ -8,22 +8,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
-import frc.robot.Robot;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,22 +33,20 @@ public class ControlPanel extends SubsystemBase {
   private NetworkTableEntry controlVelocity;
 
   List<Integer> velocityRange = IntStream.rangeClosed(-100, 100).boxed().collect(Collectors.toList());
-  private int curControlVelIndex =0;
 
+  
   /**
    * Creates a new ControlPanel.
    */
   public ControlPanel() {
-    control_motor = new SafeSparkMax(Constants.CONTROL_PANLE_PORT, MotorType.kBrushless);
+    control_motor = new SafeSparkMax(Constants.CONTROL_PANEL_PORT, MotorType.kBrushless);
 
-    // Always reset to factory defaults, just in case.
-    control_motor.restoreFactoryDefaults();
-
-    control_motor.clearFaults();
 
     control_encoder = control_motor.getEncoder();
     
     control_pid_controller = control_motor.getPIDController();
+    configurePID();
+
   }
 
   private void configurePID() {
@@ -71,14 +62,6 @@ public class ControlPanel extends SubsystemBase {
     control_motor.stopMotor();
   }
 
-  private void configureShuffleBoard() {
-  controlVelocity = Shuffleboard.getTab("Diagnostics")
-      .add("Control Encoder Velocity" , 0)
-      .withSize(2, 2)
-      .withPosition(0, 4)
-      .withWidget(BuiltInWidgets.kGraph)
-      .getEntry();
-  }
 
   /**This gets the velocity if the control motor
  * @return curVal This returns the current velocity of the control panle motor 
@@ -93,7 +76,9 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public void set(double control_vel){
-    control_pid_controller.setReference(control_vel, ControlType.kVelocity);
+    ControlType controltype;
+    controltype = ControlType.kVelocity; // We can change this as needed
+    control_pid_controller.setReference(control_vel, controltype);
   }
 
   @Override
@@ -107,25 +92,26 @@ public class ControlPanel extends SubsystemBase {
 /*
 
 
-                                         ______________________________
-                                         \                            /
-                                          \                          /
-                                           \       |       |        /
-                                            \      |       |       /
-                                             \                    /
-                                              \                  /
-                                               \   |_      _|   /
-                                                \   |______|   /
-                                                 \            /
-                                                  \          /
-                                                   \        /
-                                                    \      /
-                                                     \    /
-                                                      \  /
-                                                       \/
+      ______________________________          
+      \                            /
+       \                          /
+        \       |       |        /
+         \      |       |       /
+          \                    /
+           \                  /
+            \   |_      _|   /
+             \   |______|   /
+              \            /
+               \          /
+                \        /
+                 \      /
+                  \    /
+                   \  /
+                    \/
 
 
-  This is a ice cicle it goes no where because it is only a coment. 
+  This is a icicle it goes no where because it is only a coment. 
   This means you can look at him as long as you want.
+  Plus he can't fall on your head and hurt you.
 Made by Triston Van Wyk
 */
