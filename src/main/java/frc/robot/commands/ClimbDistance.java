@@ -24,6 +24,7 @@ public class ClimbDistance extends CommandBase {
    * Creates a new ClimbDistance.
    */
   private Climb climb;
+  double climbdashboard = SmartDashboard.getNumber("Climb Speed", 0);
   public ClimbDistance(Climb climb) {
     this.climb = climb;
     addRequirements(this.climb);
@@ -37,12 +38,11 @@ public class ClimbDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double climb = SmartDashboard.getNumber("Climb Speed", 0);
 
     // Min  function followed by a Max clamps the value.
-    climb = Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, climb));
+    climbdashboard = Math.max(-NEO_MAX_RPM, Math.min(NEO_MAX_RPM, climbdashboard));
 
-    this.climb.setReference(climb);
+    this.climb.setReference(climbdashboard);
   }
 
   // Called once the command ends or is interrupted.
