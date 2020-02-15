@@ -24,10 +24,6 @@ public class MoveTimed extends WaitCommand {
   }
 
   @Override
-  public void initialize() {
-  }
-
-  @Override
   public void execute() {
     drivetrain.set(ControlMode.PercentOutput, 1, 1);
   }
@@ -35,10 +31,5 @@ public class MoveTimed extends WaitCommand {
   @Override
   public void end(boolean interrupted) {
     drivetrain.set(0, 0);
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 }
