@@ -19,10 +19,7 @@ public class MoveTimed extends WaitCommand {
    */
   public MoveTimed(DrivetrainFalcon drivetrain, double seconds) {
     super(seconds);
-    // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
-
-
     addRequirements(this.drivetrain);
   }
 
