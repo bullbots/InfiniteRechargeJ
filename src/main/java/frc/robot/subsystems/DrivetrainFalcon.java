@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DrivetrainFalcon extends SubsystemBase {
 
-  private final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT);
-  private final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT);
+  private final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT, true);
+  private final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT, true);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMasterFalcon, rightMasterFalcon);
   private final NavX gyro = new NavX();
@@ -47,17 +47,18 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightSlaveFalcon.follow(rightMasterFalcon);
 
       leftMasterFalcon.setInverted(true);
+      leftSlaveFalcon.setInverted(true);
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
-      orchestra = new Orchestra();
-      orchestra.addInstrument(leftMasterFalcon);
-      orchestra.addInstrument(rightMasterFalcon);
-      orchestra.addInstrument(leftSlaveFalcon);
-      orchestra.addInstrument(rightSlaveFalcon);
+      // orchestra = new Orchestra();
+      // orchestra.addInstrument(leftMasterFalcon);
+      // orchestra.addInstrument(rightMasterFalcon);
+      // orchestra.addInstrument(leftSlaveFalcon);
+      // orchestra.addInstrument(rightSlaveFalcon);
 
-      orchestra.loadMusic("test.chrp");
+      // orchestra.loadMusic("test.chrp");
     }
 
     diffDrive.setRightSideInverted(false);
@@ -69,15 +70,16 @@ public class DrivetrainFalcon extends SubsystemBase {
   }
 
   private void configurePID() {
-    leftMasterFalcon.config_kF(0, Constants.LEFT_MASTER_FF);
-    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_P);
-    leftMasterFalcon.config_kI(0, Constants.LEFT_MASTER_I);
-    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_D);
+    // Set Velocity PID Constants in slot 0
+    leftMasterFalcon.config_kF(0, Constants.LEFT_VELOCITY_FF);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_VELOCITY_P);
+    leftMasterFalcon.config_kI(0, Constants.LEFT_VELOCITY_I);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_VELOCITY_D);
 
-    rightMasterFalcon.config_kF(0, Constants.RIGHT_MASTER_FF);
-    rightMasterFalcon.config_kP(0, Constants.RIGHT_MASTER_P);
-    rightMasterFalcon.config_kI(0, Constants.RIGHT_MASTER_I);
-    rightMasterFalcon.config_kD(0, Constants.RIGHT_MASTER_D);
+    rightMasterFalcon.config_kF(0, Constants.RIGHT_VELOCITY_FF);
+    rightMasterFalcon.config_kP(0, Constants.RIGHT_VELOCITY_P);
+    rightMasterFalcon.config_kI(0, Constants.RIGHT_VELOCITY_I);
+    rightMasterFalcon.config_kD(0, Constants.RIGHT_VELOCITY_D);
   }
 
   private void configureMotionMagic() {
@@ -125,6 +127,10 @@ public class DrivetrainFalcon extends SubsystemBase {
    */
   public void arcadeDrive(double speed, double rotation){
     diffDrive.arcadeDrive(speed, rotation);
+  }
+
+  public void curvatureDrive(double speed, double rotation, boolean isQuickTurn) {
+    diffDrive.curvatureDrive(speed, rotation, isQuickTurn);
   }
 
   /**

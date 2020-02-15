@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,11 +19,13 @@ public class JoystickDrive extends CommandBase {
   private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
+  private BooleanSupplier isQuickTurn;
 
-  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier isQuickTurn) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
+    this.isQuickTurn = isQuickTurn;
 
     addRequirements(m_drivetrain);
   }
@@ -33,12 +36,12 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    System.out.println(joyY.getAsDouble());
-    m_drivetrain.arcadeDrive(joyY.getAsDouble(), joyX.getAsDouble());
+    m_drivetrain.curvatureDrive(joyY.getAsDouble(), joyX.getAsDouble(), isQuickTurn.getAsBoolean());
   }
 
   @Override
   public void end(boolean interrupted) {
+    m_drivetrain.set(0,0);
   }
 
   @Override

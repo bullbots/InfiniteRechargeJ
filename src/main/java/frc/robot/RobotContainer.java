@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // User Input
-  public static Joystick stick = new Joystick(0);
+  private static Joystick stick = new Joystick(0);
+  private static JoystickButton button3 = new JoystickButton(stick, 3);
   
   // Subsystems
   // private final Shooter shooter = new Shooter();
@@ -43,7 +44,8 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
-      () -> stick.getX()
+      () -> stick.getX(),
+      () -> button3.get()
     ));
 
     // drivetrain.setDefaultCommand(new Music(drivetrain));
