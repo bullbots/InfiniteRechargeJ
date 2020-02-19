@@ -53,7 +53,7 @@ public class JoystickDrive extends CommandBase {
 
     SmartDashboard.putString("Gear", m_drivetrain.shifter.getGear().toString());
 
-    m_drivetrain.curvatureDrive(yOut, joyX.getAsDouble(), isQuickTurn.getAsBoolean());
+    m_drivetrain.curvatureDrive(yOut, joyX.getAsDouble()*.7, isQuickTurn.getAsBoolean());
   }
 
   @Override
