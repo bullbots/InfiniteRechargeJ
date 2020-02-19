@@ -41,16 +41,19 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
+    double yOut;
 
-    if (Math.abs(joyY.getAsDouble()) > shiftThreshold) {
-      m_drivetrain.shifter.shiftHigh();
-    }else{
+    if (Math.abs(joyY.getAsDouble()) < shiftThreshold || isQuickTurn.getAsBoolean()) {
       m_drivetrain.shifter.shiftLow();
+      yOut = joyY.getAsDouble();
+    }else{
+      m_drivetrain.shifter.shiftHigh();
+      yOut = (joyY.getAsDouble()*21037-36.7)/21000.;
     }
 
     SmartDashboard.putString("Gear", m_drivetrain.shifter.getGear().toString());
 
-    m_drivetrain.curvatureDrive(joyY.getAsDouble(), joyX.getAsDouble(), isQuickTurn.getAsBoolean());
+    m_drivetrain.curvatureDrive(yOut, joyX.getAsDouble(), isQuickTurn.getAsBoolean());
   }
 
   @Override
