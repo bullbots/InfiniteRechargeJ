@@ -23,14 +23,19 @@ public final class Constants {
     // Climb Ports
     public static int CLIMB_TALON = 6;
 
+    // Pneumatic Channels
+    public static int COOLING_CLOSE_CHANNEL = 0;
+    public static int COOLING_OPEN_CHANNEL = 1;
+    public static int LOW_GEAR_CHANNEL = 2;
+    public static int HIGH_GEAR_CHANNEL = 3;
 
     /**
      * ALL DRIVETRAIN RELATED CONSTANTS GO HERE
      */
 
-    public static double LEFT_VELOCITY_FF = 0.0463;
-    public static double LEFT_VELOCITY_P = 0.15;
-    public static double LEFT_VELOCITY_I = 0;
+    public static double LEFT_VELOCITY_FF = 0.0455;
+    public static double LEFT_VELOCITY_P = 0.18;
+    public static double LEFT_VELOCITY_I = 0.0001;
     public static double LEFT_VELOCITY_D = 0;
 
     public static int LEFT_MASTER_ACCELERATION = 0;
