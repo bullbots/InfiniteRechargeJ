@@ -31,6 +31,24 @@ public class Intake extends SubsystemBase {
     intake_motor = new SafeTalonSRX(Constants.INTAKE_PORT);
     wheel_motor = new SafeTalonSRX(Constants.INTAKE_Wheel_PORT);
   }
+  public double getIntakeOutputCurrent(){
+    return intake_motor.getStatorCurrent();
+  }
+  public double getWheelOutputCurrent(){
+    return wheel_motor.getStatorCurrent();
+  }
+  public int getIntakeEncoderTicks(){
+    return intake_motor.getSelectedSensorPosition();
+  }
+  public int getWheelEncoderTicks(){
+    return wheel_motor.getSelectedSensorPosition();
+  }
+  public int getIntakeVelocity(){
+    return intake_motor.getSelectedSensorVelocity();
+  }
+  public int getWheelVelocity(){
+    return wheel_motor.getSelectedSensorVelocity();
+  }
 
   /** This sets teh intake motor
    * @param val This is a value that sets the motor
