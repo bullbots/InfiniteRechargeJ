@@ -10,12 +10,16 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.SafeTalonFX;
+import frc.robot.util.Shifter;
 import frc.robot.util.NavX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,12 +32,15 @@ import java.util.stream.IntStream;
 
 public class DrivetrainFalcon extends SubsystemBase {
 
-  private final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT);
-  private final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT);
+  public final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT, true);
+  public final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT, true);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMasterFalcon, rightMasterFalcon);
   private final NavX gyro = new NavX();
   public Orchestra orchestra;
+
+  public final Shifter shifter = new Shifter(Constants.LOW_GEAR_CHANNEL, Constants.HIGH_GEAR_CHANNEL);
+  private final DoubleSolenoid motorCooler = new DoubleSolenoid(Constants.COOLING_OPEN_CHANNEL, Constants.COOLING_CLOSE_CHANNEL);
 
   private NetworkTableEntry leftCurrent;
   private NetworkTableEntry leftPosition;
@@ -56,17 +63,20 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightSlaveFalcon.follow(rightMasterFalcon);
 
       leftMasterFalcon.setInverted(true);
+      leftSlaveFalcon.setInverted(true);
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
-//      orchestra = new Orchestra();
-//      orchestra.addInstrument(leftMasterFalcon);
-//      orchestra.addInstrument(rightMasterFalcon);
-//      orchestra.addInstrument(leftSlaveFalcon);
-//      orchestra.addInstrument(rightSlaveFalcon);
-//
-//      orchestra.loadMusic("test.chrp");
+      motorCooler.set(Value.kReverse);
+
+      // orchestra = new Orchestra();
+      // orchestra.addInstrument(leftMasterFalcon);
+      // orchestra.addInstrument(rightMasterFalcon);
+      // orchestra.addInstrument(leftSlaveFalcon);
+      // orchestra.addInstrument(rightSlaveFalcon);
+
+      // orchestra.loadMusic("test.chrp");
     }
 
     diffDrive.setRightSideInverted(false);
@@ -78,15 +88,16 @@ public class DrivetrainFalcon extends SubsystemBase {
   }
 
   private void configurePID() {
-    leftMasterFalcon.config_kF(0, Constants.LEFT_MASTER_FF);
-    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_P);
-    leftMasterFalcon.config_kI(0, Constants.LEFT_MASTER_I);
-    leftMasterFalcon.config_kP(0, Constants.LEFT_MASTER_D);
+    // Set Velocity PID Constants in slot 0
+    leftMasterFalcon.config_kF(0, Constants.LEFT_VELOCITY_FF);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_VELOCITY_P);
+    leftMasterFalcon.config_kI(0, Constants.LEFT_VELOCITY_I);
+    leftMasterFalcon.config_kP(0, Constants.LEFT_VELOCITY_D);
 
-    rightMasterFalcon.config_kF(0, Constants.RIGHT_MASTER_FF);
-    rightMasterFalcon.config_kP(0, Constants.RIGHT_MASTER_P);
-    rightMasterFalcon.config_kI(0, Constants.RIGHT_MASTER_I);
-    rightMasterFalcon.config_kD(0, Constants.RIGHT_MASTER_D);
+    rightMasterFalcon.config_kF(0, Constants.RIGHT_VELOCITY_FF);
+    rightMasterFalcon.config_kP(0, Constants.RIGHT_VELOCITY_P);
+    rightMasterFalcon.config_kI(0, Constants.RIGHT_VELOCITY_I);
+    rightMasterFalcon.config_kD(0, Constants.RIGHT_VELOCITY_D);
   }
 
   private void configureMotionMagic() {
@@ -109,6 +120,7 @@ public class DrivetrainFalcon extends SubsystemBase {
   @Override
   public void periodic() {
     if (Robot.isReal()) {
+
       leftCurrent.setNumber(leftMasterFalcon.getStatorCurrent());
       leftPosition.setNumber(leftMasterFalcon.getSelectedSensorPosition());
       leftVelocity.setNumber(leftMasterFalcon.getSelectedSensorVelocity());
@@ -116,6 +128,7 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightCurrent.setNumber(rightMasterFalcon.getStatorCurrent());
       rightPosition.setNumber(rightMasterFalcon.getSelectedSensorPosition());
       rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
+
     } else {
       double curLeftCurrent = 0;
       if (simIter.hasNext()) {
@@ -139,6 +152,13 @@ public class DrivetrainFalcon extends SubsystemBase {
    */
   public void arcadeDrive(double speed, double rotation){
     diffDrive.arcadeDrive(speed, rotation);
+  }
+
+  public void curvatureDrive(double speed, double rotation, boolean isQuickTurn) {
+    speed = Math.abs(speed) <= 0.1? 0: speed;
+    rotation = Math.abs(rotation) <= 0.1? 0: rotation;
+    
+    diffDrive.curvatureDrive(speed, rotation, isQuickTurn);
   }
 
   /**

@@ -7,15 +7,17 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainFalcon;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class Music extends CommandBase {
+public class VelocityTest extends CommandBase {
+  /**
+   * Creates a new VelocityTest.
+   */
   private DrivetrainFalcon drivetrain;
-  public Music(DrivetrainFalcon drivetrain) {
+  public VelocityTest(DrivetrainFalcon drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
@@ -24,6 +26,22 @@ public class Music extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // drivetrain.orchestra.play();
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    drivetrain.set(ControlMode.Velocity, 21000, 21000);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -24,12 +25,15 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // User Input
-  public static Joystick stick = new Joystick(0);
+  private static Joystick stick = new Joystick(0);
+  private static JoystickButton button3 = new JoystickButton(stick, 3);
   
   // Subsystems
   // private final Shooter shooter = new Shooter();
   private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
   // private final Intake intake = new Intake();
+
+  private final Compressor compressor = new Compressor();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -38,12 +42,15 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    compressor.start();
     
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
-      () -> stick.getX()
+      () -> stick.getX(),
+      () -> button3.get()
     ));
 
     // drivetrain.setDefaultCommand(new Music(drivetrain));
@@ -70,7 +77,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new MoveTimed(drivetrain, 1.0);
+    // return new PIDTune(drivetrain);
+    return new VelocityTest(drivetrain);
   }
 
   public void stopAllSubsystems(){
