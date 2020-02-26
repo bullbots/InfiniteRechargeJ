@@ -25,6 +25,11 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class DrivetrainFalcon extends SubsystemBase {
 
   public final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT, true);
@@ -44,6 +49,10 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightCurrent;
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
+
+  // This gives a maximum value of 40 after 3 seconds of grabbing a value every robot period.
+  List<Double> simulationList = IntStream.rangeClosed(0, 50 * 2).mapToDouble((i)->i * 0.02 * 40.0 / 2.0).boxed().collect(Collectors.toList());
+  Iterator<Double> simIter = simulationList.iterator();
 
   public DrivetrainFalcon() {
     if (Robot.isReal()) {
@@ -121,7 +130,12 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
 
     } else {
-      leftCurrent.setNumber(0.0);
+      double curLeftCurrent = 0;
+      if (simIter.hasNext()) {
+        curLeftCurrent = simIter.next();
+      }
+
+      leftCurrent.setNumber(curLeftCurrent);
       leftPosition.setNumber(0.0);
       leftVelocity.setNumber(0.0);
 
