@@ -8,49 +8,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.robot.subsystems.DrivetrainFalcon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import frc.robot.subsystems.Intake;
 
-public class MoveDistance extends CommandBase {
+public class IntakeSet extends CommandBase {
   /**
-   * Creates a new MoveDistance.
+   * Creates a new IntakeSet.
    */
-  private DrivetrainFalcon drivetrain;
-  private int targetDistance;
+  private Intake intake;
 
-  private int allowedError = 100;
-
-  public MoveDistance(DrivetrainFalcon drivetrain, int targetDistance) {
+  boolean isRunning; // True = On, False = Off
+  double intakeSpeed;
+  public IntakeSet(boolean isRunning) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drivetrain = drivetrain;
-    this.targetDistance = targetDistance;
-
-    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.set(ControlMode.MotionMagic, targetDistance, targetDistance);
+    if (isRunning) {
+      intake.setintake(intakeSpeed);
+    } else {
+      intake.setintake(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.set(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double[] positions = drivetrain.getPositions();
-
-    return Math.abs(positions[0] - targetDistance) <= allowedError && Math.abs(positions[1] - targetDistance) <= allowedError;
+    return false;
   }
 }

@@ -11,19 +11,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.subsystems.DrivetrainFalcon;
 
-public class MoveDistance extends CommandBase {
+public class TurnDistance extends CommandBase {
   /**
-   * Creates a new MoveDistance.
+   * Creates a new TurnDistance.
    */
   private DrivetrainFalcon drivetrain;
   private int targetDistance;
+  private double currentPosition;
 
   private int allowedError = 100;
 
-  public MoveDistance(DrivetrainFalcon drivetrain, int targetDistance) {
+  public TurnDistance(DrivetrainFalcon drivetrain, int targetDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
-    this.targetDistance = targetDistance;
+    this.targetDistance =  targetDistance;
 
     addRequirements(drivetrain);
   }

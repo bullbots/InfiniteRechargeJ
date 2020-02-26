@@ -26,23 +26,28 @@ public final class Constants {
     // Control panle ports
     public static int CONTROL_PANEL_PORT = 9;
 
+    // Pneumatic Channels
+    public static int COOLING_CLOSE_CHANNEL = 0;
+    public static int COOLING_OPEN_CHANNEL = 1;
+    public static int LOW_GEAR_CHANNEL = 2;
+    public static int HIGH_GEAR_CHANNEL = 3;
 
     /**
      * ALL DRIVETRAIN RELATED CONSTANTS GO HERE
      */
 
-    public static double LEFT_MASTER_FF = 0.2;
-    public static double LEFT_MASTER_P = 0.2;
-    public static double LEFT_MASTER_I = 0;
-    public static double LEFT_MASTER_D = 0;
+    public static double LEFT_VELOCITY_FF = 0.0455;
+    public static double LEFT_VELOCITY_P = 0.18;
+    public static double LEFT_VELOCITY_I = 0.0001;
+    public static double LEFT_VELOCITY_D = 0;
 
     public static int LEFT_MASTER_ACCELERATION = 0;
     public static int LEFT_MASTER_VELOCITY = 0;
 
-    public static double RIGHT_MASTER_FF = 0.2;
-    public static double RIGHT_MASTER_P = 0.2;
-    public static double RIGHT_MASTER_I = 0;
-    public static double RIGHT_MASTER_D = 0;
+    public static double RIGHT_VELOCITY_FF = 0.0473;
+    public static double RIGHT_VELOCITY_P = 0.15;
+    public static double RIGHT_VELOCITY_I = 0;
+    public static double RIGHT_VELOCITY_D = 0;
 
     public static int RIGHT_MASTER_ACCELERATION = 3300;
     public static int RIGHT_MASTER_VELOCITY = 3300;

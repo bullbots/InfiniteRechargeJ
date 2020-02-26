@@ -7,24 +7,30 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.robot.util.Shifter.Gear;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainFalcon;
 import frc.robot.RobotContainer;
 
 public class JoystickDrive extends CommandBase {
   
-  private Drivetrain m_drivetrain;
+  private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
-  private DoubleSupplier joyZ;
+  private BooleanSupplier isQuickTurn;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, DoubleSupplier joyZ) {
+  private final double shiftThreshold = 9.167 / 20.833;
+
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier isQuickTurn) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
-    this.joyZ = joyZ;
+    this.isQuickTurn = isQuickTurn;
 
     addRequirements(m_drivetrain);
   }
@@ -35,11 +41,21 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    m_drivetrain.diffDrive(joyY.getAsDouble(), joyX.getAsDouble(), joyZ.getAsDouble());
+
+    if (Math.abs(joyY.getAsDouble()) > shiftThreshold) {
+      m_drivetrain.shifter.shiftHigh();
+    }else{
+      m_drivetrain.shifter.shiftLow();
+    }
+
+    SmartDashboard.putString("Gear", m_drivetrain.shifter.getGear().toString());
+
+    m_drivetrain.curvatureDrive(joyY.getAsDouble(), joyX.getAsDouble(), isQuickTurn.getAsBoolean());
   }
 
   @Override
   public void end(boolean interrupted) {
+    m_drivetrain.set(0,0);
   }
 
   @Override
