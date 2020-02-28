@@ -8,19 +8,19 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.util.SafeTalonSRX;
 
 public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private WPI_TalonSRX intake_motor;
-  private WPI_TalonSRX wheel_motor;
+  private SafeTalonSRX intake_motor;
+  private SafeTalonSRX wheel_motor;
 
 
   private NetworkTableEntry intakeVelocity;
@@ -28,8 +28,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
     configureShuffleBoard();
 
-    intake_motor = new WPI_TalonSRX(Constants.INTAKE_PORT);
-    wheel_motor = new WPI_TalonSRX(Constants.INTAKE_Wheel_PORT);
+    intake_motor = new SafeTalonSRX(Constants.INTAKE_PORT);
+    wheel_motor = new SafeTalonSRX(Constants.INTAKE_Wheel_PORT);
   }
 
   /** This sets teh intake motor

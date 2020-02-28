@@ -20,12 +20,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static frc.robot.Constants.NEO_MAX_RPM;
+import frc.robot.util.SafeSparkMax;
 
 public class Shooter extends SubsystemBase {
 
-    private CANSparkMax top_shooter;
-    private CANSparkMax bottom_shooter;
+    private SafeSparkMax top_shooter;
+    private SafeSparkMax bottom_shooter;
 
     private CANEncoder top_encoder;
     private CANEncoder bottom_encoder;
@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     }
 
     public Shooter(){
-        top_shooter = new CANSparkMax(Constants.TOP_SHOOTER_PORT, MotorType.kBrushless);
-        bottom_shooter = new CANSparkMax(Constants.BOTTOM_SHOOTER_PORT, MotorType.kBrushless);
+        top_shooter = new SafeSparkMax(Constants.TOP_SHOOTER_PORT, MotorType.kBrushless);
+        bottom_shooter = new SafeSparkMax(Constants.BOTTOM_SHOOTER_PORT, MotorType.kBrushless);
       
         // Always reset to factory defaults, just in case.
         top_shooter.restoreFactoryDefaults();
@@ -75,6 +75,11 @@ public class Shooter extends SubsystemBase {
         bottom_pid_controller.setP(Constants.SHOOTER_P);
         bottom_pid_controller.setI(Constants.SHOOTER_I);
         bottom_pid_controller.setD(Constants.SHOOTER_D);
+    }
+
+    public void stop() {
+        top_shooter.stopMotor();
+        bottom_shooter.stopMotor();
     }
 
     private void configureShuffleBoard() {
