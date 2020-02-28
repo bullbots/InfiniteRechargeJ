@@ -21,7 +21,7 @@ public final class Constants {
     public static int BOTTOM_SHOOTER_PORT = 7;
 
     // Climb Ports
-    public static int CLIMB_TALON = 6;
+    public static int CLIMB_SPARK_MAX = 6;
 
     // Pneumatic Channels
     public static int COOLING_CLOSE_CHANNEL = 0;
