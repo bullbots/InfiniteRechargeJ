@@ -23,6 +23,9 @@ public final class Constants {
     // Climb Ports
     public static int CLIMB_TALON = 6;
 
+    // Control panle ports
+    public static int CONTROL_PANEL_PORT = 9;
+
     // Pneumatic Channels
     public static int COOLING_CLOSE_CHANNEL = 0;
     public static int COOLING_OPEN_CHANNEL = 1;
@@ -73,6 +76,15 @@ public final class Constants {
      * ALL CLIMB RELATED CONSTANTS GO HERE
      */
 
+
+     /**
+      * ALL CONTROL PANEL CONSTANTS GO HERE
+      */
+
+      public static double CONTROL_FF = 0;
+      public static double CONTROL_P = 0;
+      public static double CONTROL_I = 0;
+      public static double CONTROL_D = 0;
 
      /**
       * MISCELLANEOUS CONSTANTS
