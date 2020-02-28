@@ -38,7 +38,8 @@ public class ControlPanelSpinDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    controlpanel.set(0);
+    double curVal = this.controlpanel.getVelocity();
+    controlpanel.set(curVal);
   }
 
   // Called once the command ends or is interrupted.
