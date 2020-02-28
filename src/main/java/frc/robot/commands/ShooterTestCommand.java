@@ -130,6 +130,8 @@ public class ShooterTestCommand extends CommandBase {
     bottom_motor_current.setNumber(0);
     input_top_motor.setNumber(0);
     input_bottom_motor.setNumber(0);
+
+    shooter.set(0, 0);
   }
 
   // Returns true when the command should end.
