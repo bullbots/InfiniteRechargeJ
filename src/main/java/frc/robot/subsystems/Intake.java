@@ -14,36 +14,32 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.util.SafeTalonSRX;
+import frc.robot.util.SafeVictorSPX;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
 public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private SafeTalonSRX intake_motor;
-  private SafeTalonSRX wheel_motor;
-
+  private SafeVictorSPX intake_motor;
 
   private NetworkTableEntry intakeVelocity;
 
   public Intake() {
     configureShuffleBoard();
 
-    intake_motor = new SafeTalonSRX(Constants.INTAKE_PORT);
-    wheel_motor = new SafeTalonSRX(Constants.INTAKE_Wheel_PORT);
+    intake_motor = new SafeVictorSPX(Constants.INTAKE_PORT);
   }
 
   /** This sets teh intake motor
    * @param val This is a value that sets the motor
    */
-  public void setintake(double val){
-    intake_motor.set(val);
+  public void setintake(VictorSPXControlMode mode, double val){
+    intake_motor.set(mode, val);
   }
 /**This sets the value of the intake wheel
  * @param val
  */
-  public void setwheel(double val){
-    wheel_motor.set(val);
-  }
 
   private void configureShuffleBoard() {
     intakeVelocity = Shuffleboard.getTab("Diagnostics")
@@ -62,7 +58,6 @@ public class Intake extends SubsystemBase {
 
   public void stop(){
     intake_motor.stopMotor();
-    wheel_motor.stopMotor();
   }
 }
 
