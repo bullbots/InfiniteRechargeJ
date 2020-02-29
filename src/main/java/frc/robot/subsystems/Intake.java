@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.util.SafeTalonSRX;
 
+
 public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
@@ -32,7 +33,7 @@ public class Intake extends SubsystemBase {
     wheel_motor = new SafeTalonSRX(Constants.INTAKE_Wheel_PORT);
   }
 
-  /** This sets teh intake motor
+  /** This sets the intake motor
    * @param val This is a value that sets the motor
    */
   public void setintake(double val){
@@ -65,18 +66,3 @@ public class Intake extends SubsystemBase {
     wheel_motor.stopMotor();
   }
 }
-
-/*
-This is a car
-
-
-    |______|
-    | |  | |
-      |  |
-    |_|__|_|
-    |      |
-
-
-    I really like it :)
-    Made by Triston Van Wyk
-    */

@@ -26,7 +26,7 @@ public class JoystickDrive extends CommandBase {
 
   private final double shiftThreshold = 9.167 / 20.833;
 
-  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier isQuickTurn) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
@@ -41,6 +41,10 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
+
+    if (Math.abs(this.joyY.getAsDouble()) < .2) {
+
+    }
 
     if (Math.abs(joyY.getAsDouble()) > shiftThreshold) {
       m_drivetrain.shifter.shiftHigh();
