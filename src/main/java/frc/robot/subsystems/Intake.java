@@ -23,8 +23,6 @@ public class Intake extends SubsystemBase {
    */
   private SafeVictorSPX intake_motor;
 
-  private NetworkTableEntry intakeVelocity;
-
   public Intake() {
     configureShuffleBoard();
 
@@ -42,12 +40,6 @@ public class Intake extends SubsystemBase {
  */
 
   private void configureShuffleBoard() {
-    intakeVelocity = Shuffleboard.getTab("Diagnostics")
-                .add("Intake Encoder Velocity", 0)
-                .withSize(2, 2)
-                .withPosition(0, 2)
-                .withWidget(BuiltInWidgets.kGraph)
-                .getEntry();
   }
 
   @Override
