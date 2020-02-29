@@ -78,7 +78,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return new PIDTune(drivetrain);
-    return new VelocityTest(drivetrain);
+    return new MoveTimed(drivetrain, 3);
   }
 
   public void stopAllSubsystems(){
