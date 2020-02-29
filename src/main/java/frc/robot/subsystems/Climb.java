@@ -11,15 +11,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.SafeSparkMax;
 
 public class Climb extends SubsystemBase {
-    private SafeSparkMax climb_spark_max;
+    private SafeSparkMax climb_spark_max = new SafeSparkMax(Constants.CLIMB_SPARK_MAX, MotorType.kBrushless);;
 
-    private CANPIDController climb_pid_controller;
+    private CANPIDController climb_pid_controller = climb_spark_max.getPIDController();
 
-    private CANEncoder climb_encoder;  // Was I supposed to use the climb encoder somewhere?
-    
-    public Climb() {
-        climb_spark_max = new SafeSparkMax(Constants.CLIMB_SPARK_MAX, MotorType.kBrushless);
-    }
+    private CANEncoder climb_encoder = climb_spark_max.getEncoder();
 
     /** This tells the code to set the climb talon's contol mode and magnitude
      * @param control_mode This is the controm mode of the motor
