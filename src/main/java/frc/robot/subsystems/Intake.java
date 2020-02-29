@@ -32,8 +32,8 @@ public class Intake extends SubsystemBase {
   /** This sets teh intake motor
    * @param val This is a value that sets the motor
    */
-  public void setintake(VictorSPXControlMode mode, double val){
-    intake_motor.set(mode, val);
+  public void set(double val){
+    intake_motor.set(val);
   }
 /**This sets the value of the intake wheel
  * @param val
