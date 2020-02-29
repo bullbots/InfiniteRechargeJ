@@ -49,8 +49,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
-      () -> stick.getX(),
-      () -> button3.get()
+      () -> stick.getX()
     ));
 
     // drivetrain.setDefaultCommand(new Music(drivetrain));
