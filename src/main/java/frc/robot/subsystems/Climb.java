@@ -5,6 +5,7 @@ import frc.robot.Constants;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -24,6 +25,7 @@ public class Climb extends SubsystemBase {
     public Climb() {
         brake();
         climb_spark_max.setSmartCurrentLimit(60);
+        climb_spark_max.setIdleMode(IdleMode.kBrake);
     }
 
     /** This tells the code to set the climb talon's contol mode and magnitude
