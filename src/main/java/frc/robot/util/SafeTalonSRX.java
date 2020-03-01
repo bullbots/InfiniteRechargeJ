@@ -1,6 +1,9 @@
 package frc.robot.util;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class SafeTalonSRX extends WPI_TalonSRX{
 
@@ -11,6 +14,5 @@ public class SafeTalonSRX extends WPI_TalonSRX{
 
         configFactoryDefault();
         configContinuousCurrentLimit(40);
-        
     }
 }

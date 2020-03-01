@@ -4,15 +4,16 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.SafeTalonSRX;
 
 public class Climb extends SubsystemBase {
-    private SafeTalonSRX climb_talon;
-    
+    private final SafeTalonSRX climb_talon = new SafeTalonSRX(Constants.CLIMB_TALON);
+
     public Climb() {
-        climb_talon = new SafeTalonSRX(Constants.CLIMB_TALON);
+        climb_talon.setNeutralMode(NeutralMode.Brake);
     }
 
     /** This tells the code to set the climb talon's contol mode and magnitude
