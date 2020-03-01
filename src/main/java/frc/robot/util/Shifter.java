@@ -1,11 +1,11 @@
 package frc.robot.util;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Shifter {
 
-    private Solenoid lowGearSolenoid;
-    private Solenoid highGearSolenoid;
+    private DoubleSolenoid shifterSolenoid;
 
     public enum Gear {
         LOW,
@@ -15,9 +15,7 @@ public class Shifter {
     private Gear currentGear;
 
     public Shifter(int lowGearChannel, int highGearChannel) {
-        lowGearSolenoid = new Solenoid(lowGearChannel);
-        highGearSolenoid = new Solenoid(highGearChannel);
-
+        shifterSolenoid = new DoubleSolenoid(lowGearChannel, highGearChannel);
         setGear(Gear.LOW);
     }
 
@@ -34,12 +32,11 @@ public class Shifter {
 
         switch (gear) {
             case HIGH:
-                lowGearSolenoid.set(false);
-                highGearSolenoid.set(true);
+                shifterSolenoid.set(Value.kReverse);
                 break;
             case LOW:
-                lowGearSolenoid.set(true);
-                highGearSolenoid.set(false);
+                shifterSolenoid.set(Value.kForward);
+                break;
         }
     }
 

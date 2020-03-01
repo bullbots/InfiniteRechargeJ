@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,11 +21,13 @@ public class ClimbTest extends CommandBase {
    */
   private Climb climb;
   private DoubleSupplier joyY;
+  private BooleanSupplier brake;
 
-  public ClimbTest(Climb climb, DoubleSupplier joyY) {
+  public ClimbTest(Climb climb, DoubleSupplier joyY, BooleanSupplier brake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
     this.joyY = joyY;
+    this.brake = brake;
     addRequirements(climb);
   }
 
@@ -39,6 +42,11 @@ public class ClimbTest extends CommandBase {
   public void execute() {
     // double output = SmartDashboard.getNumber("Output", 0);
     climb.set(joyY.getAsDouble());
+    if(brake.getAsBoolean()) {
+      climb.brake();
+    }else {
+      climb.unbrake();
+    }
   }
 
   // Called once the command ends or is interrupted.
