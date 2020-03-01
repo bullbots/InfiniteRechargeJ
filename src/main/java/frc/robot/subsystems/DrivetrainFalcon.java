@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Iterator;
@@ -50,7 +51,7 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
 
-  private final double shiftThreshold = 9.167 / 20.833;
+  private double shiftThreshold = 9.167 / 20.833;
 
   // This gives a maximum value of 40 after 3 seconds of grabbing a value every robot period.
   List<Double> simulationList = IntStream.rangeClosed(0, 50 * 2).mapToDouble((i)->i * 0.02 * 40.0 / 2.0).boxed().collect(Collectors.toList());
@@ -71,6 +72,8 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
       motorCooler.set(Value.kReverse);
+
+      SmartDashboard.putNumber("ShiftAt", shiftThreshold);
 
       // orchestra = new Orchestra();
       // orchestra.addInstrument(leftMasterFalcon);
@@ -131,6 +134,7 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightPosition.setNumber(rightMasterFalcon.getSelectedSensorPosition());
       rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
 
+      shiftThreshold = SmartDashboard.getNumber("ShiftAt", .4);
     } else {
       double curLeftCurrent = 0;
       if (simIter.hasNext()) {
@@ -153,13 +157,16 @@ public class DrivetrainFalcon extends SubsystemBase {
    * @param rotation double
    */
   public void arcadeDrive(double speed, double rotation){
-    speed = Math.signum(speed) * Math.pow(speed, 2);
-    rotation = Math.signum(rotation) * Math.pow(rotation, 2);
+    // speed = Math.signum(speed) * Math.pow(speed, 2);
+    // rotation = Math.signum(rotation) * Math.pow(rotation, 2);
 
-    if (Math.abs(speed) > shiftThreshold) {
-      shifter.shiftHigh();
-    }else{
+    if (speed <= shiftThreshold) {
       shifter.shiftLow();
+      speed = (21000 / shiftThreshold) * speed;
+    }else {
+      shifter.shiftHigh();
+      double m = (21000 - 9240) / (1-shiftThreshold);
+      speed = m * (speed - 1) + 21000;
     }
 
     diffDrive.arcadeDrive(speed, rotation);
