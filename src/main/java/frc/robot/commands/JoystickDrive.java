@@ -42,7 +42,7 @@ public class JoystickDrive extends CommandBase {
   @Override
   public void execute() {
 
-    if (Math.abs(joyY.getAsDouble()) > shiftThreshold) {
+    if (Math.abs(joyY.getAsDouble()) > shiftThreshold && !isQuickTurn.getAsBoolean()) {
       m_drivetrain.shifter.shiftHigh();
     }else{
       m_drivetrain.shifter.shiftLow();

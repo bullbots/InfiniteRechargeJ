@@ -19,9 +19,13 @@ public class ShootVelocity extends CommandBase {
 
   double topVelocity;
   double bottomVelocity;
+
   public ShootVelocity(Shooter shooter, double topVelocity, double bottomVelocity) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
+
+    this.topVelocity = topVelocity;
+    this.bottomVelocity = bottomVelocity;
 
     addRequirements(this.shooter);
   }
