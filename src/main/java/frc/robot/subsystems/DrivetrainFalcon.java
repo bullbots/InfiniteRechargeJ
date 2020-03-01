@@ -51,7 +51,10 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
 
-  private double shiftThreshold = 9.167 / 20.833;
+  private final double shiftThreshold = 0.8;
+  private final double firstGearSlope = 1 / shiftThreshold;
+  private final double secondGearSlope = ((21000 - 9240) / (1-shiftThreshold)) / 21000.;
+  private final double secondGearIntercept = 26000. / 21000.;
 
   // This gives a maximum value of 40 after 3 seconds of grabbing a value every robot period.
   List<Double> simulationList = IntStream.rangeClosed(0, 50 * 2).mapToDouble((i)->i * 0.02 * 40.0 / 2.0).boxed().collect(Collectors.toList());
@@ -71,9 +74,6 @@ public class DrivetrainFalcon extends SubsystemBase {
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
 
-      motorCooler.set(Value.kReverse);
-
-      SmartDashboard.putNumber("ShiftAt", shiftThreshold);
 
       // orchestra = new Orchestra();
       // orchestra.addInstrument(leftMasterFalcon);
@@ -134,7 +134,6 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightPosition.setNumber(rightMasterFalcon.getSelectedSensorPosition());
       rightVelocity.setNumber(rightMasterFalcon.getSelectedSensorVelocity());
 
-      shiftThreshold = SmartDashboard.getNumber("ShiftAt", .4);
     } else {
       double curLeftCurrent = 0;
       if (simIter.hasNext()) {
@@ -157,16 +156,20 @@ public class DrivetrainFalcon extends SubsystemBase {
    * @param rotation double
    */
   public void arcadeDrive(double speed, double rotation){
-    // speed = Math.signum(speed) * Math.pow(speed, 2);
-    // rotation = Math.signum(rotation) * Math.pow(rotation, 2);
 
-    if (speed <= shiftThreshold) {
+    if (Math.abs(speed) <= shiftThreshold) {
+      SmartDashboard.putString("State", "Low");
       shifter.shiftLow();
-      speed = (21000 / shiftThreshold) * speed;
-    }else {
+      SmartDashboard.putNumber("Before", speed);
+      speed = firstGearSlope * speed;
+
+      SmartDashboard.putNumber("After", speed);
+    } else {
+      SmartDashboard.putNumber("Before", speed);
+      SmartDashboard.putString("State", "High");
       shifter.shiftHigh();
-      double m = (21000 - 9240) / (1-shiftThreshold);
-      speed = m * (speed - 1) + 21000;
+      speed = secondGearSlope * (speed - 1) + secondGearIntercept;
+      SmartDashboard.putNumber("After", speed);
     }
 
     diffDrive.arcadeDrive(speed, rotation);
