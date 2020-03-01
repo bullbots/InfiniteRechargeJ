@@ -50,6 +50,8 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
 
+  private final double shiftThreshold = 9.167 / 20.833;
+
   // This gives a maximum value of 40 after 3 seconds of grabbing a value every robot period.
   List<Double> simulationList = IntStream.rangeClosed(0, 50 * 2).mapToDouble((i)->i * 0.02 * 40.0 / 2.0).boxed().collect(Collectors.toList());
   Iterator<Double> simIter = simulationList.iterator();
@@ -151,6 +153,15 @@ public class DrivetrainFalcon extends SubsystemBase {
    * @param rotation double
    */
   public void arcadeDrive(double speed, double rotation){
+    speed = Math.signum(speed) * Math.pow(speed, 2);
+    rotation = Math.signum(rotation) * Math.pow(rotation, 2);
+
+    if (Math.abs(speed) > shiftThreshold) {
+      shifter.shiftHigh();
+    }else{
+      shifter.shiftLow();
+    }
+
     diffDrive.arcadeDrive(speed, rotation);
   }
 
