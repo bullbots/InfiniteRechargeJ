@@ -25,7 +25,17 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotContainer {
   // User Input
   private static Joystick stick = new Joystick(0);
-  private static JoystickButton button3 = new JoystickButton(stick, 3);
+  
+  private static JoystickButton trigger = new JoystickButton(stick, 1);
+
+  private static Joystick button_board = new Joystick(1);
+
+  private static JoystickButton climber_up = new JoystickButton(button_board, 1);
+  private static JoystickButton climber_down = new JoystickButton(button_board, 2);
+  private static JoystickButton control_panel = new JoystickButton(button_board, 3);
+  private static JoystickButton control_panel_cw = new JoystickButton(button_board, 4);
+  private static JoystickButton control_panel_ccw = new JoystickButton(button_board, 5);
+  private static JoystickButton shooter_toggle = new JoystickButton(button_board, 6);
   
   // Subsystems
   private final Shooter shooter = new Shooter();
@@ -44,19 +54,12 @@ public class RobotContainer {
     configureButtonBindings();
 
     compressor.start();
-
-    climb.setDefaultCommand(new ClimbTest(climb, () -> -stick.getY(), () -> button3.get()));
     
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
       () -> stick.getX()
     ));
-
-    // drivetrain.setDefaultCommand(new Music(drivetrain));
-
-    // shooter.setDefaultCommand(new ShooterTest(shooter));
-    // intake.setDefaultCommand(new IntakeTest(intake));
   }
 
   /**
@@ -67,7 +70,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    // trigger.whileHeld(new ShooterTest());
+    trigger.whenPressed(new Shoot(shooter));
+
+    // climber_up.whileheld(ClimbUp());
+    // climber_down.whileheld(ClimbDown());
+    // control_panel.toggleWhenPressed();
+    // control_panel_cw.whileHeld();
+    // control_panel_ccw.whileHeld();
+    // shooter_toggle.whenPressed();
   }
 
 

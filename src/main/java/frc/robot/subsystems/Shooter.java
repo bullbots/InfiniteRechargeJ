@@ -83,6 +83,18 @@ public class Shooter extends SubsystemBase {
         bottom_pid_controller.setD(Constants.SHOOTER_D);
     }
 
+    public void raiseSolenoid() {
+        angle_solenoid.set(Value.kForward);
+    }
+
+    public void lowerSolenoid() {
+        angle_solenoid.set(Value.kReverse);
+    }
+
+    public void stopSolenoid() {
+        angle_solenoid.set(Value.kOff);
+    }
+
     public void stop() {
         top_shooter.stopMotor();
         bottom_shooter.stopMotor();
