@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.subsystems.Intake;
 
@@ -32,9 +34,9 @@ public class IntakeSet extends CommandBase {
   @Override
   public void execute() {
     if (isRunning) {
-      intake.setintake(intakeSpeed);
+      intake.set(intakeSpeed);
     } else {
-      intake.setintake(0);
+      intake.set(0);
     }
   }
 
