@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Iterator;
@@ -48,6 +49,11 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightCurrent;
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
+
+  private final double shiftThreshold = 0.8;
+  private final double firstGearSlope = 1 / shiftThreshold;
+  private final double secondGearSlope = ((21000 - 9240) / (1-shiftThreshold)) / 21000.;
+  private final double secondGearIntercept = 26000. / 21000.;
 
   // This gives a maximum value of 40 after 3 seconds of grabbing a value every robot period.
   List<Double> simulationList = IntStream.rangeClosed(0, 50 * 2).mapToDouble((i)->i * 0.02 * 40.0 / 2.0).boxed().collect(Collectors.toList());
@@ -148,6 +154,22 @@ public class DrivetrainFalcon extends SubsystemBase {
    * @param rotation double
    */
   public void arcadeDrive(double speed, double rotation){
+
+    if (Math.abs(speed) <= shiftThreshold) {
+      SmartDashboard.putString("State", "Low");
+      shifter.shiftLow();
+      SmartDashboard.putNumber("Before", speed);
+      speed = firstGearSlope * speed;
+
+      SmartDashboard.putNumber("After", speed);
+    } else {
+      SmartDashboard.putNumber("Before", speed);
+      SmartDashboard.putString("State", "High");
+      shifter.shiftHigh();
+      speed = secondGearSlope * (speed - 1) + secondGearIntercept;
+      SmartDashboard.putNumber("After", speed);
+    }
+
     diffDrive.arcadeDrive(speed, rotation);
   }
 

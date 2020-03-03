@@ -17,6 +17,7 @@ import frc.robot.util.SafeTalonSRX;
 import frc.robot.util.SafeVictorSPX;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
+
 public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
@@ -29,7 +30,7 @@ public class Intake extends SubsystemBase {
     intake_motor = new SafeVictorSPX(Constants.INTAKE_PORT);
   }
 
-  /** This sets teh intake motor
+  /** This sets the intake motor
    * @param val This is a value that sets the motor
    */
   public void set(double val){
@@ -52,18 +53,3 @@ public class Intake extends SubsystemBase {
     intake_motor.stopMotor();
   }
 }
-
-/*
-This is a car
-
-
-    |______|
-    | |  | |
-      |  |
-    |_|__|_|
-    |      |
-
-
-    I really like it :)
-    Made by Triston Van Wyk
-    */

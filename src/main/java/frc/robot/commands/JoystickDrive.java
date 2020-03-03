@@ -22,15 +22,11 @@ public class JoystickDrive extends CommandBase {
   private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
-  private BooleanSupplier isQuickTurn;
 
-  private final double shiftThreshold = 9.167 / 20.833;
-
-  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier isQuickTurn) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
-    this.isQuickTurn = isQuickTurn;
 
     addRequirements(m_drivetrain);
   }
@@ -41,16 +37,7 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-
-    if (Math.abs(joyY.getAsDouble()) > shiftThreshold && !isQuickTurn.getAsBoolean()) {
-      m_drivetrain.shifter.shiftHigh();
-    }else{
-      m_drivetrain.shifter.shiftLow();
-    }
-
-    SmartDashboard.putString("Gear", m_drivetrain.shifter.getGear().toString());
-
-    m_drivetrain.curvatureDrive(joyY.getAsDouble(), joyX.getAsDouble(), isQuickTurn.getAsBoolean());
+    m_drivetrain.arcadeDrive(joyY.getAsDouble(), joyX.getAsDouble());
   }
 
   @Override
