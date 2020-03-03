@@ -19,6 +19,7 @@ public class ShooterTest extends CommandBase {
    * Creates a new ShooterTest.
    */
   private Shooter shooter;
+  
   public ShooterTest(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(this.shooter);
