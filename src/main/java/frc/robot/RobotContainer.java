@@ -54,7 +54,12 @@ public class RobotContainer {
     configureButtonBindings();
 
     compressor.start();
-
+    
+    drivetrain.setDefaultCommand(new JoystickDrive(
+      drivetrain,
+      () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
+      () -> stick.getX()
+    ));
   }
 
   /**
@@ -83,7 +88,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return new PIDTune(drivetrain);
-    return new VelocityTest(drivetrain);
+    return new MoveTimed(drivetrain, 3);
   }
 
   public void stopAllSubsystems(){

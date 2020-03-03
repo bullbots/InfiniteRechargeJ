@@ -14,44 +14,33 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.util.SafeTalonSRX;
+import frc.robot.util.SafeVictorSPX;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+
 
 public class Intake extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private SafeTalonSRX intake_motor;
-  private SafeTalonSRX wheel_motor;
-
-
-  private NetworkTableEntry intakeVelocity;
+  private SafeVictorSPX intake_motor;
 
   public Intake() {
     configureShuffleBoard();
 
-    intake_motor = new SafeTalonSRX(Constants.INTAKE_PORT);
-    wheel_motor = new SafeTalonSRX(Constants.INTAKE_Wheel_PORT);
+    intake_motor = new SafeVictorSPX(Constants.INTAKE_PORT);
   }
 
-  /** This sets teh intake motor
+  /** This sets the intake motor
    * @param val This is a value that sets the motor
    */
-  public void setintake(double val){
+  public void set(double val){
     intake_motor.set(val);
   }
 /**This sets the value of the intake wheel
  * @param val
  */
-  public void setwheel(double val){
-    wheel_motor.set(val);
-  }
 
   private void configureShuffleBoard() {
-    intakeVelocity = Shuffleboard.getTab("Diagnostics")
-                .add("Intake Encoder Velocity", 0)
-                .withSize(2, 2)
-                .withPosition(0, 2)
-                .withWidget(BuiltInWidgets.kGraph)
-                .getEntry();
   }
 
   @Override
@@ -62,21 +51,5 @@ public class Intake extends SubsystemBase {
 
   public void stop(){
     intake_motor.stopMotor();
-    wheel_motor.stopMotor();
   }
 }
-
-/*
-This is a car
-
-
-    |______|
-    | |  | |
-      |  |
-    |_|__|_|
-    |      |
-
-
-    I really like it :)
-    Made by Triston Van Wyk
-    */

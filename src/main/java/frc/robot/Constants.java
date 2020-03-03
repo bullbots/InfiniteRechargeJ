@@ -14,7 +14,6 @@ public final class Constants {
 
     // Intake Ports
     public static int INTAKE_PORT = 5;
-    public static int INTAKE_Wheel_PORT = 8;
 
     // Shooter Ports
     public static int TOP_SHOOTER_PORT = 6;

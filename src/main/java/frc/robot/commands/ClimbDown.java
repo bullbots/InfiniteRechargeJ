@@ -7,22 +7,22 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climb;
 
-import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import frc.robot.subsystems.Intake;
-
-public class IntakeSet extends CommandBase {
+public class ClimbDown extends CommandBase {
   /**
-   * Creates a new IntakeSet.
+   * Creates a new ClimbDown.
    */
-  private Intake intake;
+  private Climb climb;
 
-  boolean isRunning; // True = On, False = Off
-  double intakeSpeed;
-  public IntakeSet(boolean isRunning) {
+  public ClimbDown(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.climb = climb;
+
+    addRequirements(climb);
   }
 
   // Called when the command is initially scheduled.
@@ -33,16 +33,13 @@ public class IntakeSet extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (isRunning) {
-      intake.set(intakeSpeed);
-    } else {
-      intake.set(0);
-    }
+    climb.set(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climb.set(0);
   }
 
   // Returns true when the command should end.
