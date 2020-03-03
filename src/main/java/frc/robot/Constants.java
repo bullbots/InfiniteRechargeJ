@@ -23,6 +23,9 @@ public final class Constants {
     // Climb Ports
     public static int CLIMB_SPARK_MAX = 9;
 
+    // Control ports
+    public static int CONTROL_PORT = 10;
+
     // Pneumatic Channels
     public static int BRAKE_OFF_CHANNEL = 0;
     public static int BRAKE_ON_CHANNEL = 1;
