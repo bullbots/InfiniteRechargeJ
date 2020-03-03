@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,9 +28,10 @@ public class RobotContainer {
   private static JoystickButton button3 = new JoystickButton(stick, 3);
   
   // Subsystems
-  // private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter();
   private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
   // private final Intake intake = new Intake();
+  private final Climb climb = new Climb();
 
   private final Compressor compressor = new Compressor();
 
@@ -44,8 +44,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     compressor.start();
-    
 
+    climb.setDefaultCommand(new ClimbTest(climb, () -> -stick.getY(), () -> button3.get()));
+    
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
@@ -77,7 +78,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return new PIDTune(drivetrain);
-    return new VelocityTest(drivetrain);
+    return new MoveTimed(drivetrain, 3);
   }
 
   public void stopAllSubsystems(){

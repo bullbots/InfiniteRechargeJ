@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -33,6 +35,8 @@ public class Shooter extends SubsystemBase {
     private CANPIDController top_pid_controller;
     private CANPIDController bottom_pid_controller;
 
+    private final DoubleSolenoid angle_solenoid = new DoubleSolenoid(Constants.HIGH_ANGLE_CHANNEL, Constants.LOW_ANGLE_CHANNEL);
+
     private NetworkTableEntry topVelocity;
     private NetworkTableEntry bottomVelocity;
 
@@ -60,6 +64,8 @@ public class Shooter extends SubsystemBase {
 
         top_pid_controller = top_shooter.getPIDController();
         bottom_pid_controller = bottom_shooter.getPIDController();
+
+        angle_solenoid.set(Value.kForward);
 
         configurePID();
         configureShuffleBoard();

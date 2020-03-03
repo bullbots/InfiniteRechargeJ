@@ -2,42 +2,56 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.SafeTalonSRX;
+import frc.robot.util.SafeSparkMax;
 
 public class Climb extends SubsystemBase {
-    private final SafeTalonSRX climb_talon = new SafeTalonSRX(Constants.CLIMB_TALON);
+    private CANSparkMax climb_spark_max = new CANSparkMax(Constants.CLIMB_SPARK_MAX, MotorType.kBrushless);
+    private CANPIDController climb_pid_controller = climb_spark_max.getPIDController();
+    private CANEncoder climb_encoder = climb_spark_max.getEncoder();
+
+    private DoubleSolenoid brake_solenoid = new DoubleSolenoid(Constants.BRAKE_ON_CHANNEL, Constants.BRAKE_OFF_CHANNEL);
 
     public Climb() {
-        climb_talon.setNeutralMode(NeutralMode.Brake);
+        brake();
+        climb_spark_max.setSmartCurrentLimit(60);
+        climb_spark_max.setIdleMode(IdleMode.kBrake);
     }
 
     /** This tells the code to set the climb talon's contol mode and magnitude
      * @param control_mode This is the controm mode of the motor
      * @param magnitude This the magnitude of the motor
      */
-    public void set( ControlMode control_mode, double magnitude) {
-        climb_talon.set(control_mode, magnitude);
+    public void set(ControlType control_type, double magnitude) {
+        climb_pid_controller.setReference(magnitude, control_type);
     }
 
     /** This tells the motor what set it's speed to
      * @param speed This is the speed of the motor
      */
     public void set(double speed) {
-        climb_talon.set(speed);
+        climb_spark_max.set(speed);
     }
 
-    /** This sets the mode, demand and demand type for the climb motors
-     * @param mode This is the mode of the control mode
-     * @param demand0 This is the demand 1 
-     * @param demand1Type This is the type of demand for demand 2
-     * @param demand1 This is demand 2
-     */
-    public void set(ControlMode mode, double demand0, DemandType demand1Type, double demand1) {
-        climb_talon.set(mode, demand0, demand1Type, demand1);
+    public void brake() {
+        brake_solenoid.set(Value.kForward);
+    }
+
+    public void unbrake() {
+        brake_solenoid.set(Value.kReverse);
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("Climb Current", climb_spark_max.getOutputCurrent());
     }
 }

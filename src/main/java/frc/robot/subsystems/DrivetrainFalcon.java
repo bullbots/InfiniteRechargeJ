@@ -41,7 +41,6 @@ public class DrivetrainFalcon extends SubsystemBase {
   public Orchestra orchestra;
 
   public final Shifter shifter = new Shifter(Constants.LOW_GEAR_CHANNEL, Constants.HIGH_GEAR_CHANNEL);
-  private final DoubleSolenoid motorCooler = new DoubleSolenoid(Constants.COOLING_OPEN_CHANNEL, Constants.COOLING_CLOSE_CHANNEL);
 
   private NetworkTableEntry leftCurrent;
   private NetworkTableEntry leftPosition;
@@ -73,7 +72,6 @@ public class DrivetrainFalcon extends SubsystemBase {
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
-
 
       // orchestra = new Orchestra();
       // orchestra.addInstrument(leftMasterFalcon);

@@ -21,13 +21,15 @@ public final class Constants {
     public static int BOTTOM_SHOOTER_PORT = 7;
 
     // Climb Ports
-    public static int CLIMB_TALON = 9;
+    public static int CLIMB_SPARK_MAX = 9;
 
     // Pneumatic Channels
-    public static int COOLING_CLOSE_CHANNEL = 0;
-    public static int COOLING_OPEN_CHANNEL = 1;
+    public static int BRAKE_OFF_CHANNEL = 0;
+    public static int BRAKE_ON_CHANNEL = 1;
     public static int LOW_GEAR_CHANNEL = 2;
     public static int HIGH_GEAR_CHANNEL = 3;
+    public static int LOW_ANGLE_CHANNEL = 4;
+    public static int HIGH_ANGLE_CHANNEL = 5;
 
     /**
      * ALL DRIVETRAIN RELATED CONSTANTS GO HERE
