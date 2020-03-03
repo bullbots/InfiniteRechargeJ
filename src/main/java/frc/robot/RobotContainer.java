@@ -65,10 +65,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    trigger.whenPressed(Shoot());
+    trigger.whenPressed(new Shoot(shooter));
 
-    climber_up.whileheld(ClimbUp());
-    climber_down.whileheld(ClimbDown());
+    // climber_up.whileheld(ClimbUp());
+    // climber_down.whileheld(ClimbDown());
     // control_panel.toggleWhenPressed();
     // control_panel_cw.whileHeld();
     // control_panel_ccw.whileHeld();
