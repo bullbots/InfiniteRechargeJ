@@ -44,32 +44,32 @@ public class IntakeTest extends CommandBase {
     intake_Motor_Current = Shuffleboard.getTab("intake_Test")
     .add("intake Current", 0)
     .withSize(2, 2)
-    .withPosition(0, 4)
+    .withPosition(2, 4)
     .withWidget(BuiltInWidgets.kGraph)
     .getEntry();
     intake_Motor_Velocity = Shuffleboard.getTab("intake_Test")
     .add("intake Velocity", 0)
     .withSize(2, 2)
-    .withPosition(0, 4)
+    .withPosition(4, 4)
     .withWidget(BuiltInWidgets.kGraph)
     .getEntry();
 
     wheel_Motor_Velocity = Shuffleboard.getTab("intake_Test")
     .add("wheel Velocity", 0)
     .withSize(2, 2)
-    .withPosition(0, 4)
+    .withPosition(6, 4)
     .withWidget(BuiltInWidgets.kGraph)
     .getEntry();
     wheel_Motor_Encoder = Shuffleboard.getTab("intake_Test")
     .add("wheel Encoder", 0)
     .withSize(2, 2)
-    .withPosition(0, 4)
+    .withPosition(8, 4)
     .withWidget(BuiltInWidgets.kGraph)
     .getEntry();
     wheel_Motor_Current = Shuffleboard.getTab("intake_Test")
     .add("wheel Current", 0)
     .withSize(2, 2)
-    .withPosition(0, 4)
+    .withPosition(10, 4)
     .withWidget(BuiltInWidgets.kGraph)
     .getEntry();
   }
@@ -86,10 +86,6 @@ public class IntakeTest extends CommandBase {
 
     int intakeMotorVelocity = intake.getIntakeVelocity();
     int wheelMotorVelocity = intake.getWheelVelocity();
-
-
-
-
 
     intake_Motor_Current.setDouble(intakeMotorCurrent);
     wheel_Motor_Current.setDouble(wheelMotorCurrent);
