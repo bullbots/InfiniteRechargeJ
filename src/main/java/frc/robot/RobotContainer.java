@@ -72,8 +72,8 @@ public class RobotContainer {
     
     trigger.whenPressed(new Shoot(shooter));
 
-    // climber_up.whileheld(ClimbUp());
-    // climber_down.whileheld(ClimbDown());
+    climber_up.whileHeld(new ClimbUp(climb));
+    climber_down.whileHeld(new ClimbDown(climb));
     // control_panel.toggleWhenPressed();
     // control_panel_cw.whileHeld();
     // control_panel_ccw.whileHeld();
