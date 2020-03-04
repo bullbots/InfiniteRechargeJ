@@ -29,6 +29,24 @@ public class Intake extends SubsystemBase {
 
     intake_motor = new SafeVictorSPX(Constants.INTAKE_PORT);
   }
+  public double getIntakeOutputCurrent(){
+    return intake_motor.getStatorCurrent();
+  }
+  public double getWheelOutputCurrent(){
+    return wheel_motor.getStatorCurrent();
+  }
+  public int getIntakeEncoderTicks(){
+    return intake_motor.getSelectedSensorPosition();
+  }
+  public int getWheelEncoderTicks(){
+    return wheel_motor.getSelectedSensorPosition();
+  }
+  public int getIntakeVelocity(){
+    return intake_motor.getSelectedSensorVelocity();
+  }
+  public int getWheelVelocity(){
+    return wheel_motor.getSelectedSensorVelocity();
+  }
 
   /** This sets the intake motor
    * @param val This is a value that sets the motor
