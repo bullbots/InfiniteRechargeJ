@@ -37,12 +37,11 @@ public class RaiseShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopSolenoid();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false; // Do I need to put an end condition, if so, what?  I remember you saying something about end conditions today, but I don't remember if that was about this
   }
 }

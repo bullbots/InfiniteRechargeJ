@@ -74,10 +74,11 @@ public class RobotContainer {
 
     climber_up.whileHeld(new ClimbUp(climb));
     climber_down.whileHeld(new ClimbDown(climb));
-    // control_panel.toggleWhenPressed();
+    // control_panel.toggleWhenPressed();  // Is this supposed to be a whileHeld?
     // control_panel_cw.whileHeld();
     // control_panel_ccw.whileHeld();
-    // shooter_toggle.whenPressed();
+    shooter_toggle.whenPressed(new RaiseShooter(shooter));
+    shooter_toggle.whenReleased(new LowerShooter(shooter));
   }
 
 
