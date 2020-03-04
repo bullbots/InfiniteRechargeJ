@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   private SafeVictorSPX intake_motor;
+  private SafeTalonSRX intake_windsheild_wiper;
 
   public Intake() {
     configureShuffleBoard();
@@ -39,6 +40,14 @@ public class Intake extends SubsystemBase {
 /**This sets the value of the intake wheel
  * @param val
  */
+
+  public void raiseIntakeArm(double speed) {
+    intake_windsheild_wiper.set(speed);
+  }
+
+  public void lowerIntakeArm(double speed) {
+    intake_windsheild_wiper.set(-speed);
+  }
 
   private void configureShuffleBoard() {
   }
