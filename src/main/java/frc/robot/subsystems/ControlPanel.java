@@ -8,21 +8,24 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.util.SafeTalonFX;
 import frc.robot.util.SafeTalonSRX;
 
 public class ControlPanel extends SubsystemBase {
 
-  private SafeTalonSRX control_motor;
+  private SafeTalonSRX control_motor = new SafeTalonSRX(Constants.CONTROL_PORT);
+
+  private DoubleSolenoid control_solenoid = new DoubleSolenoid(Constants.BRAKE_ON_CHANNEL, Constants.BRAKE_OFF_CHANNEL);
 
   private NetworkTableEntry controlVelocity;
 
   public ControlPanel() {
+    brake();
     configureShuffleBoard();
 
     control_motor = new SafeTalonSRX(Constants.CONTROL_PORT);
@@ -33,6 +36,17 @@ public class ControlPanel extends SubsystemBase {
    */
   public void setcontrol(double val){
     control_motor.set(val);
+  }
+
+  public void set(double speed) {
+  control_motor.set(speed);
+}
+  public void brake() {
+    control_solenoid.set(Value.kForward);
+  }
+
+  public void unbrake() {
+    control_solenoid.set(Value.kReverse);
   }
 
   private void configureShuffleBoard() {
