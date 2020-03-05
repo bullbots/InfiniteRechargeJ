@@ -7,52 +7,41 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-public class Shoot extends CommandBase {
+public class IntakeBalls extends CommandBase {
   /**
-   * Creates a new Shoot.
+   * Creates a new IntakeBalls.
    */
+  private Intake intake;
 
-   private Shooter shooter;
-   private double vel = 0;
-   private BooleanSupplier isLongShot;
-
-  public Shoot(Shooter shooter, BooleanSupplier isLongShot) {
-    addRequirements(shooter);
-    this.shooter = shooter;
-    this.isLongShot = isLongShot;
+  public IntakeBalls(Intake intake) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake);
+    this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (isLongShot.getAsBoolean()) {
-      vel = 6500;
-      shooter.raiseSolenoid();
-    }else {
-      vel = 3000;
-      shooter.lowerSolenoid();
-    }
-    System.out.println(vel);
+    intake.lowerIntakeArm(.1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.set(vel, -vel);
+    intake.set(0.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.set(0, 0);
+    intake.raiseIntakeArm(-.1);
+    intake.set(0);
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
