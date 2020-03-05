@@ -91,10 +91,6 @@ public class Shooter extends SubsystemBase {
         angle_solenoid.set(Value.kReverse);
     }
 
-    public void stopSolenoid() {
-        angle_solenoid.set(Value.kOff);
-    }
-
     public void stop() {
         top_shooter.stopMotor();
         bottom_shooter.stopMotor();
