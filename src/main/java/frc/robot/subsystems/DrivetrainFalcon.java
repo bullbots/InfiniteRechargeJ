@@ -170,7 +170,7 @@ public class DrivetrainFalcon extends SubsystemBase {
       SmartDashboard.putNumber("After", speed);
     }
 
-    diffDrive.arcadeDrive(speed, rotation);
+    diffDrive.arcadeDrive(speed, rotation * 0.6);
   }
 
   public void curvatureDrive(double speed, double rotation, boolean isQuickTurn) {

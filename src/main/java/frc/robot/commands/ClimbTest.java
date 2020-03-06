@@ -42,11 +42,6 @@ public class ClimbTest extends CommandBase {
   public void execute() {
     // double output = SmartDashboard.getNumber("Output", 0);
     climb.set(joyY.getAsDouble());
-    if(brake.getAsBoolean()) {
-      climb.brake();
-    }else {
-      climb.unbrake();
-    }
   }
 
   // Called once the command ends or is interrupted.
