@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,11 +52,20 @@ public class RobotContainer {
 
   private final Compressor compressor = new Compressor();
 
+  private final NetworkTableEntry targetXEntry;
+  private double targetX;
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
 
   public RobotContainer() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("datatable");
+    targetXEntry = table.getEntry("TargetX");
+    // -9999 is the do-nothing, no entry found default
+    targetXEntry.setDouble(-9999);
+    targetX = -9999;
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -84,6 +98,24 @@ public class RobotContainer {
 
     shooter_toggle.whenPressed(new RaiseShooter(shooter));
     shooter_toggle.whenReleased(new LowerShooter(shooter));
+
+    // SmartDashboard button
+    SmartDashboard.putData("Align Shooter", new AlignShooter(new PIDController(1. / 640., 0.0, 0.0)
+            // measurementSource
+            , () -> targetX  // targetX needs to be center-of-image based (offset included)
+            // setpointSource
+            , 0.0
+            // useOutput
+            , (output) -> {
+              if (targetX == -9999) {
+                drivetrain.arcadeDrive(0.0, 0.0);
+              } else {
+                drivetrain.arcadeDrive(0.0, output);
+              }
+            }
+            // requirements
+            , drivetrain
+            ));
   }
 
 
@@ -99,6 +131,10 @@ public class RobotContainer {
 
   public void stopAllSubsystems(){
     drivetrain.stop();
+  }
+
+  public void getTargetX() {
+    targetX = targetXEntry.getDouble(-9999);
   }
 }
 

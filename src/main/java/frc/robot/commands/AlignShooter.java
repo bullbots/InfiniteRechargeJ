@@ -7,46 +7,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DrivetrainFalcon;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class AlignShooter extends CommandBase {
-  /**
-   * Creates a new AlignShooter.
-   */
-  private DrivetrainFalcon drivetrain;
-  private final double kP = 1. / 640.;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
 
-  public AlignShooter(DrivetrainFalcon drivetrain) {
-    this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
+public class AlignShooter extends PIDCommand {
+
+  public AlignShooter(PIDController controller, DoubleSupplier measurementSource, double setpoint, DoubleConsumer useOutput, Subsystem... requirements) {
+    super(controller, measurementSource, setpoint, useOutput, requirements);
+    controller.setTolerance(50, 50);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double x = SmartDashboard.getNumber("TargetX", -9999);
-
-    if (x != -9999) {
-      drivetrain.arcadeDrive(0, kP * x);
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    drivetrain.arcadeDrive(0, 0);
-  }
-
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_controller.atSetpoint();
   }
 }
