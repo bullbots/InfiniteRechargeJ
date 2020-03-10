@@ -13,14 +13,19 @@ public final class Constants {
     public static int RIGHT_SLAVE_PORT = 4;
 
     // Intake Ports
-    public static int INTAKE_PORT = 5;
+    public static int INTAKE_PORT = 10;
+    public static int INTAKE_RAISE_PORT = 13;
 
     // Shooter Ports
     public static int TOP_SHOOTER_PORT = 6;
     public static int BOTTOM_SHOOTER_PORT = 7;
+    public static int SHAKER_PORT = 11;
 
     // Climb Ports
     public static int CLIMB_SPARK_MAX = 9;
+
+    // Control Panel Ports
+    public static int CONTROL_PANEL_PORT = 12;
 
     // Pneumatic Channels
     public static int BRAKE_OFF_CHANNEL = 0;

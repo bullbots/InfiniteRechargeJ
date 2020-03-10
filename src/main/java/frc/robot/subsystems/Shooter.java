@@ -65,7 +65,7 @@ public class Shooter extends SubsystemBase {
         top_pid_controller = top_shooter.getPIDController();
         bottom_pid_controller = bottom_shooter.getPIDController();
 
-        angle_solenoid.set(Value.kForward);
+        angle_solenoid.set(Value.kReverse);
 
         configurePID();
         configureShuffleBoard();
@@ -89,10 +89,6 @@ public class Shooter extends SubsystemBase {
 
     public void lowerSolenoid() {
         angle_solenoid.set(Value.kReverse);
-    }
-
-    public void stopSolenoid() {
-        angle_solenoid.set(Value.kOff);
     }
 
     public void stop() {
@@ -206,5 +202,9 @@ public class Shooter extends SubsystemBase {
 
         topVelocity.setDouble(getVelocity(MotorPlacement.TOP));
         bottomVelocity.setDouble(getVelocity(MotorPlacement.BOTTOM));
+    }
+
+    public boolean angle45() {
+        return angle_solenoid.get().equals(Value.kForward);
     }
 }

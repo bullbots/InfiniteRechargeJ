@@ -28,6 +28,8 @@ public class RobotContainer {
   
   private static JoystickButton trigger = new JoystickButton(stick, 1);
 
+  private static JoystickButton button3 = new JoystickButton(stick, 3);
+
   private static Joystick button_board = new Joystick(1);
 
   private static JoystickButton climber_up = new JoystickButton(button_board, 1);
@@ -40,7 +42,7 @@ public class RobotContainer {
   // Subsystems
   private final Shooter shooter = new Shooter();
   private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
-  // private final Intake intake = new Intake();
+  private final Intake intake = new Intake();
   private final Climb climb = new Climb();
 
   private final Compressor compressor = new Compressor();
@@ -70,14 +72,18 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    trigger.whenPressed(new Shoot(shooter));
+    trigger.whileHeld(new Shoot(shooter, () -> shooter_toggle.get()));
 
     climber_up.whileHeld(new ClimbUp(climb));
     climber_down.whileHeld(new ClimbDown(climb));
-    // control_panel.toggleWhenPressed();
+    // control_panel.toggleWhenPressed();  // Is this supposed to be a whileHeld?
     // control_panel_cw.whileHeld();
     // control_panel_ccw.whileHeld();
-    // shooter_toggle.whenPressed();
+
+    button3.whileHeld(new IntakeBalls(intake));
+
+    shooter_toggle.whenPressed(new RaiseShooter(shooter));
+    shooter_toggle.whenReleased(new LowerShooter(shooter));
   }
 
 

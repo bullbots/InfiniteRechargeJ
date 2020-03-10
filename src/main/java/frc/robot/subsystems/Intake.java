@@ -29,6 +29,8 @@ public class Intake extends SubsystemBase {
     configureShuffleBoard();
 
     intake_motor = new SafeVictorSPX(Constants.INTAKE_PORT);
+    intake_windsheild_wiper = new SafeTalonSRX(Constants.INTAKE_RAISE_PORT);
+    
   }
 
   /** This sets the intake motor

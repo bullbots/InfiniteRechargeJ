@@ -7,25 +7,54 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.Shooter;
-import frc.robot.commands.ShootVelocity;
+import java.util.function.BooleanSupplier;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class Shoot extends SequentialCommandGroup {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Shooter;
+
+public class Shoot extends CommandBase {
   /**
    * Creates a new Shoot.
    */
-  double topVelocity = 5500;
-  double bottomVelocity = 5500;
-  public Shoot(Shooter shooter) {
-    addCommands(
-      // Shoot at constant velocity - variables set above
-      new ShootVelocity(shooter, topVelocity, bottomVelocity)
-    );
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
+
+   private Shooter shooter;
+   private double vel = 0;
+   private BooleanSupplier isLongShot;
+
+  public Shoot(Shooter shooter, BooleanSupplier isLongShot) {
+    addRequirements(shooter);
+    this.shooter = shooter;
+    this.isLongShot = isLongShot;
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    if (isLongShot.getAsBoolean()) {
+      vel = 6500;
+      shooter.raiseSolenoid();
+    }else {
+      vel = 3000;
+      shooter.lowerSolenoid();
+    }
+    System.out.println(vel);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    shooter.set(vel, -vel);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    shooter.set(0, 0);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }
