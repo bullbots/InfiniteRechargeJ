@@ -34,7 +34,7 @@ public class AlignShooter extends CommandBase {
     double x = SmartDashboard.getNumber("TargetX", -9999);
 
     if (x != -9999) {
-      drivetrain.arcadeDrive(0, kP * x, false);
+      drivetrain.arcadeDrive(0, kP * x);
     }
   }
 
