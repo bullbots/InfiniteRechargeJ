@@ -7,47 +7,55 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Shooter;
 
 public class ShootVelocity extends CommandBase {
   /**
-   * Creates a new ShootVelocity.
+   * Creates a new Shoot.
    */
-  private Shooter shooter;
 
-  double topVelocity;
-  double bottomVelocity;
+   private Shooter shooter;
+   private double vel = 0;
+   private BooleanSupplier isLongShot;
 
-  public ShootVelocity(Shooter shooter, double topVelocity, double bottomVelocity) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ShootVelocity(Shooter shooter, BooleanSupplier isLongShot) {
+    addRequirements(shooter);
     this.shooter = shooter;
-
-    this.topVelocity = topVelocity;
-    this.bottomVelocity = bottomVelocity;
-
-    addRequirements(this.shooter);
+    this.isLongShot = isLongShot;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (isLongShot.getAsBoolean()) {
+      vel = 2500;
+      shooter.raiseSolenoid();
+    }else {
+      vel = 1700;
+      shooter.lowerSolenoid();
+    }
+
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.set(topVelocity, bottomVelocity);
+    shooter.set(vel, -vel);
+    shooter.ballReleaseServo.set(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stop();
+    shooter.set(0, 0);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

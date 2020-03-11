@@ -19,7 +19,8 @@ public final class Constants {
     // Shooter Ports
     public static int TOP_SHOOTER_PORT = 6;
     public static int BOTTOM_SHOOTER_PORT = 7;
-    public static int SHAKER_PORT = 11;
+    // public static int SHAKER_PORT = 11;
+    public static int RELEASE_SERVO_PORT = 0;
 
     // Climb Ports
     public static int CLIMB_SPARK_MAX = 9;
@@ -28,8 +29,8 @@ public final class Constants {
     public static int CONTROL_PANEL_PORT = 12;
 
     // Pneumatic Channels
-    public static int BRAKE_OFF_CHANNEL = 0;
-    public static int BRAKE_ON_CHANNEL = 1;
+    public static int CONTROL_PANEL_UP_CHANNEL = 0;
+    public static int CONTROL_PANEL_DOWN_CHANNEL = 1;
     public static int LOW_GEAR_CHANNEL = 2;
     public static int HIGH_GEAR_CHANNEL = 3;
     public static int LOW_ANGLE_CHANNEL = 4;
@@ -55,7 +56,7 @@ public final class Constants {
     public static int RIGHT_MASTER_ACCELERATION = 3300;
     public static int RIGHT_MASTER_VELOCITY = 3300;
 
-    public static double DRIVETRAIN_RAMP = 0.5;
+    public static double DRIVETRAIN_RAMP = 0.3;
 
 
     /**

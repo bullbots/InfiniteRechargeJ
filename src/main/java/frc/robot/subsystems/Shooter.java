@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,6 +36,8 @@ public class Shooter extends SubsystemBase {
     private CANPIDController top_pid_controller;
     private CANPIDController bottom_pid_controller;
 
+    public final Servo ballReleaseServo = new Servo(Constants.RELEASE_SERVO_PORT);
+
     private final DoubleSolenoid angle_solenoid = new DoubleSolenoid(Constants.HIGH_ANGLE_CHANNEL, Constants.LOW_ANGLE_CHANNEL);
 
     private NetworkTableEntry topVelocity;
@@ -65,7 +68,7 @@ public class Shooter extends SubsystemBase {
         top_pid_controller = top_shooter.getPIDController();
         bottom_pid_controller = bottom_shooter.getPIDController();
 
-        angle_solenoid.set(Value.kReverse);
+        angle_solenoid.set(Value.kForward);
 
         configurePID();
         configureShuffleBoard();
@@ -199,6 +202,7 @@ public class Shooter extends SubsystemBase {
         // top_pid_controller.setP(newP);
         // top_pid_controller.setI(newI);
         // top_pid_controller.setD(newD);
+        SmartDashboard.putNumber("ServoValue", ballReleaseServo.getAngle());
 
         topVelocity.setDouble(getVelocity(MotorPlacement.TOP));
         bottomVelocity.setDouble(getVelocity(MotorPlacement.BOTTOM));
