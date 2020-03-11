@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Shooter;
@@ -32,12 +33,13 @@ public class ShootVelocity extends CommandBase {
   @Override
   public void initialize() {
     if (isLongShot.getAsBoolean()) {
-      vel = 3000;
+      vel = 2500;
       shooter.raiseSolenoid();
     }else {
-      vel = 3000;
+      vel = 1700;
       shooter.lowerSolenoid();
     }
+
 
   }
 

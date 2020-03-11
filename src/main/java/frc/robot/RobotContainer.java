@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,6 +35,7 @@ public class RobotContainer {
   
   private static JoystickButton trigger = new JoystickButton(stick, 1);
 
+  private static JoystickButton button2 = new JoystickButton(stick, 2);
   private static JoystickButton button6 = new JoystickButton(stick, 6);
   private static JoystickButton button7 = new JoystickButton(stick, 7);
   private static JoystickButton button11 = new JoystickButton(stick, 11);
@@ -49,7 +52,7 @@ public class RobotContainer {
   // Subsystems
   private final Shooter shooter = new Shooter();
   private final DrivetrainFalcon drivetrain = new DrivetrainFalcon();
-  private final Intake intake = new Intake();
+  // private final Intake intake = new Intake();
   private final Climb climb = new Climb();
   private final ControlPanel controlPanel = new ControlPanel();
 
@@ -68,8 +71,11 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
-      () -> stick.getX()
+      () -> stick.getX(),
+      () -> button6.get()
     ));
+
+    
 
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.ballReleaseServo.set(-1), shooter)
@@ -83,8 +89,14 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    SmartDashboard.putNumber("TurnSpeed", 0);
+
+    SmartDashboard.putNumber("Speed", 0);
     
-    trigger.whileHeld(new ShootVelocity(shooter, () -> shooter_toggle.get()));
+    trigger.whileHeld(new ShootVelocity(shooter, () -> !shooter_toggle.get()));
+
+    button2.whileHeld(new AlignShooter(drivetrain));
 
     climber_up.whileHeld(new ClimbUp(climb));
     climber_down.whileHeld(new ClimbDown(climb));
@@ -101,16 +113,16 @@ public class RobotContainer {
 
     // button3.whileHeld(new IntakeBalls(intake));
 
-    shooter_toggle.whenPressed(new RaiseShooter(shooter));
-    shooter_toggle.whenReleased(new LowerShooter(shooter));
+    shooter_toggle.whenPressed(new LowerShooter(shooter));
+    shooter_toggle.whenReleased(new RaiseShooter(shooter));
 
-    button7.whenPressed(new StartEndCommand(
-        () -> intake.toggle(), () -> intake.set(0), intake
-      ).withTimeout(2)
-    );
+    // button7.whenPressed(new StartEndCommand(
+    //     () -> intake.toggle(), () -> intake.set(0), intake
+    //   ).withTimeout(2)
+    // );
 
-    button6.whileHeld(new StartEndCommand(() -> intake.set(0.8), () -> intake.set(0), intake));
-    button6.whenReleased(new StartEndCommand(() -> intake.set(-0.2), () -> intake.set(0), intake).withTimeout(0.5));
+    // button6.whileHeld(new StartEndCommand(() -> intake.set(1), () -> intake.set(0), intake));
+    // button6.whenReleased(new StartEndCommand(() -> intake.set(-0.2), () -> intake.set(0), intake).withTimeout(0.5));
 
     // button3.whenPressed(new StartEndCommand(
     //     () -> System.out.println("Start"), () -> System.out.println("End"), intake
@@ -127,9 +139,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PIDTune(drivetrain);
     // return new RunCommand(() -> drivetrain.arcadeDrive(0.3, 0), drivetrain).withTimeout(3);
-    return new ParallelCommandGroup(
-      new RunCommand(() -> drivetrain.arcadeDrive(0.3, 0), drivetrain).withTimeout(3),
-      new StartEndCommand(() -> intake.toggle(), () -> intake.set(0), intake).withTimeout(2)
+    return new SequentialCommandGroup(
+      new ShootVelocity(shooter, () -> !shooter_toggle.get()).withTimeout(6),
+      new RunCommand(() -> drivetrain.arcadeDrive(-0.4, 0), drivetrain).withTimeout(3)
     );
   }
 

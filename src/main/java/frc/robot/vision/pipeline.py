@@ -10,11 +10,12 @@ import json
 import time
 import sys
 
-from cscore import CameraServer, VideoSource, UsbCamera, MjpegServer
+from cscore import CameraServer, VideoSource, UsbCamera, MjpegServer, CvSink
 from networktables import NetworkTablesInstance
 import ntcore
 import numpy as np
 import cv2
+import math
 
 sys.path.append("/usr/local/lib")
 import pyrealsense2 as rs
@@ -366,6 +367,7 @@ def startSwitchedCamera(config):
 
     return server
 
+MM_TO_FT =  math.cos(0.51487) / (10 * 12 * 2.54)
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
@@ -407,11 +409,14 @@ if __name__ == "__main__":
 
     table = ntinst.getTable("datatable")
     xEntry = table.getEntry("TargetX")
+    distance = table.getEntry("Distance")
 
     try:
         print("Getting OutputStream...")
         colorOutputStream = CameraServer.getInstance().putVideo("Color Image", 640, 480)
-        depthOutputStream = CameraServer.getInstance().putVideo("Depth Image", 640, 480)
+        # depthOutputStream = CameraServer.getInstance().putVideo("Depth Image", 640, 480)
+        
+        # CameraServer.getInstance().startAutomaticCapture()
 
         while True:
             frames = pipeline.wait_for_frames()
@@ -429,7 +434,7 @@ if __name__ == "__main__":
             depth_image = np.asanyarray(depth_frame.get_data())
             color_image = np.asanyarray(color_frame.get_data())
 
-            grip_pipeline.process(depth_image)
+            grip_pipeline.process(color_image)
             num_contours = len(grip_pipeline.find_contours_output)
 
             if num_contours > 0:
@@ -441,22 +446,27 @@ if __name__ == "__main__":
                 # (x,y) top-left coordinate of the rectangle and (w,h) be its width and height.
                 x,y,w,h = cv2.boundingRect(largest_contour)
 
-                center_x = x + w * 0.5
-                center_y = y + h * 0.5
+                center_x = (int) (x + w * 0.5)
+                center_y = (int) (y + h * 0.5)
 
-                color = (0, 0, 255) if abs(center_x) > 100 else (0, 255, 0)
-                source = cv2.rectangle(source, (x, y), (x+w, y+h),color, 1)
+                center_x = center_x - 320
+                center_y = center_y - 240
+
+                color = (0, 0, 255) if abs(center_x) > 50 else (0, 255, 0)
+                source = cv2.rectangle(color_image, (x, y), (x+w, y+h),color, 3)
 
                 print(f"CenterX: {center_x}, CenterY: {center_y}")
 
                 xEntry.setNumber(center_x)
+                distance.setNumber(depth_image[y+h+5][center_x])
             else:
                 xEntry.setNumber(-9999)
+                distance.setNumber(-1)
 
-            depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+            # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
             colorOutputStream.putFrame(color_image)
-            depthOutputStream.putFrame(depth_colormap)
+            # depthOutputStream.putFrame(depth_colormap)
 
     finally:
         print("Calling pipeline stop")

@@ -56,7 +56,7 @@ public final class Constants {
     public static int RIGHT_MASTER_ACCELERATION = 3300;
     public static int RIGHT_MASTER_VELOCITY = 3300;
 
-    public static double DRIVETRAIN_RAMP = 0.5;
+    public static double DRIVETRAIN_RAMP = 0.3;
 
 
     /**

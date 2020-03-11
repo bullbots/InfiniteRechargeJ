@@ -67,8 +67,8 @@ public class DrivetrainFalcon extends SubsystemBase {
       leftSlaveFalcon.follow(leftMasterFalcon);
       rightSlaveFalcon.follow(rightMasterFalcon);
 
-      leftMasterFalcon.setInverted(true);
-      leftSlaveFalcon.setInverted(true);
+      rightMasterFalcon.setInverted(true);
+      rightSlaveFalcon.setInverted(true);
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
@@ -170,7 +170,7 @@ public class DrivetrainFalcon extends SubsystemBase {
       SmartDashboard.putNumber("After", speed);
     }
 
-    diffDrive.arcadeDrive(speed, rotation * 0.6);
+    diffDrive.arcadeDrive(speed, rotation);
   }
 
   public void curvatureDrive(double speed, double rotation, boolean isQuickTurn) {
