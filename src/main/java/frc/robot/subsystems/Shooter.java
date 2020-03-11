@@ -178,9 +178,9 @@ public class Shooter extends SubsystemBase {
         return new double[] {top_vel, bottom_vel};
     }
 
-    /** This sets the velocity of the top abd bottem shooter motors
+    /** This sets the velocity of the top and bottom shooter motors
      * @param top_vel This is the velocity of the top motor
-     * @param bottom_vel This is the velocity of the bottem mtor
+     * @param bottom_vel This is the velocity of the bottom motor
      */
     public void set(double top_vel, double bottom_vel){
         top_pid_controller.setReference(top_vel, ControlType.kVelocity);

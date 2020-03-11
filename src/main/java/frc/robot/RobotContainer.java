@@ -72,10 +72,9 @@ public class RobotContainer {
       drivetrain,
       () -> -stick.getY(),  // Because Negative Y is forward on the joysticks
       () -> stick.getX(),
-      () -> button6.get()
+      () -> button6.get(),
+      () -> trigger.get()
     ));
-
-    
 
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.ballReleaseServo.set(-1), shooter)

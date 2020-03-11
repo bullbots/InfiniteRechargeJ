@@ -70,8 +70,9 @@ public final class Constants {
 
     public static double SHOOTER_FF = 0;
     public static double SHOOTER_P = 5e-5;
+//    public static double SHOOTER_P = 5e-4;
     public static double SHOOTER_I = 1e-6;
-    public static double SHOOTER_D = 0;
+    public static double SHOOTER_D = 5e-5;
 
     public static double NEO_MAX_RPM = 5676; // http://www.revrobotics.com/rev-21-1650/ "Empirical Free Speed"    
 

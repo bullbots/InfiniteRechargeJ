@@ -23,12 +23,14 @@ public class JoystickDrive extends CommandBase {
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
   private BooleanSupplier forceLow;
+  private BooleanSupplier driveStop;
 
-  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier forceLow) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier forceLow, BooleanSupplier driveStop) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
     this.forceLow = forceLow;
+    this.driveStop = driveStop;
 
     addRequirements(m_drivetrain);
   }
@@ -41,7 +43,12 @@ public class JoystickDrive extends CommandBase {
   public void execute() {
     double x = -joyX.getAsDouble();
     
-    m_drivetrain.arcadeDrive(joyY.getAsDouble(), x);
+//    m_drivetrain.arcadeDrive(joyY.getAsDouble(), x);
+    if (driveStop.getAsBoolean()) {
+      m_drivetrain.stop();
+    } else {
+      m_drivetrain.curvatureDrive(joyY.getAsDouble(), x);
+    }
   }
 
   @Override

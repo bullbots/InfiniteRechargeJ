@@ -33,8 +33,10 @@ import java.util.stream.IntStream;
 
 public class DrivetrainFalcon extends SubsystemBase {
 
-  public final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT, true);
-  public final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT, true);
+//  public final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT, true);
+  public final SafeTalonFX leftMasterFalcon = new SafeTalonFX(Constants.LEFT_MASTER_PORT);
+//  public final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT, true);
+  public final SafeTalonFX rightMasterFalcon = new SafeTalonFX(Constants.RIGHT_MASTER_PORT);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMasterFalcon, rightMasterFalcon);
   private final NavX gyro = new NavX();
@@ -67,8 +69,8 @@ public class DrivetrainFalcon extends SubsystemBase {
       leftSlaveFalcon.follow(leftMasterFalcon);
       rightSlaveFalcon.follow(rightMasterFalcon);
 
-      rightMasterFalcon.setInverted(true);
-      rightSlaveFalcon.setInverted(true);
+//      rightMasterFalcon.setInverted(true);
+//      rightSlaveFalcon.setInverted(true);
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
@@ -82,11 +84,11 @@ public class DrivetrainFalcon extends SubsystemBase {
       // orchestra.loadMusic("test.chrp");
     }
 
-    diffDrive.setRightSideInverted(false);
+//    diffDrive.setRightSideInverted(false);
     diffDrive.setSafetyEnabled(false);
 
-    configurePID();
-    configureMotionMagic();
+//    configurePID();
+//    configureMotionMagic();
     configureSmartDashboard();
   }
 
@@ -171,12 +173,31 @@ public class DrivetrainFalcon extends SubsystemBase {
     }
 
     diffDrive.arcadeDrive(speed, rotation);
+//    diffDrive.curvatureDrive(speed, rotation, );
   }
 
-  public void curvatureDrive(double speed, double rotation, boolean isQuickTurn) {
-    speed = Math.abs(speed) <= 0.1? 0: speed;
-    rotation = Math.abs(rotation) <= 0.1? 0: rotation;
-    
+  public void curvatureDrive(double speed, double rotation) {
+//    speed = Math.abs(speed) <= 0.1? 0: speed;
+//    rotation = Math.abs(rotation) <= 0.1? 0: rotation;
+    boolean isQuickTurn = false;
+
+    if (Math.abs(speed) <= shiftThreshold) {
+      SmartDashboard.putString("State", "Low");
+      shifter.shiftLow();
+      SmartDashboard.putNumber("Before", speed);
+      speed = firstGearSlope * speed;
+
+      SmartDashboard.putNumber("After", speed);
+      isQuickTurn = true;
+    } else {
+      SmartDashboard.putNumber("Before", speed);
+      SmartDashboard.putString("State", "High");
+      shifter.shiftHigh();
+      speed = secondGearSlope * (speed - 1) + secondGearIntercept;
+      SmartDashboard.putNumber("After", speed);
+    }
+    System.out.println("speed: " + speed);
+    System.out.println("rotation: " + rotation);
     diffDrive.curvatureDrive(speed, rotation, isQuickTurn);
   }
 

@@ -39,8 +39,6 @@ public class ShootVelocity extends CommandBase {
       vel = 1700;
       shooter.lowerSolenoid();
     }
-
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
