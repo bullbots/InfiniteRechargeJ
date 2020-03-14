@@ -39,9 +39,10 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    double x = -joyX.getAsDouble();
-    
-    m_drivetrain.arcadeDrive(joyY.getAsDouble(), x);
+    double x = m_drivetrain.deadBand(joyX.getAsDouble());
+    double y = m_drivetrain.deadBand(joyY.getAsDouble());
+
+    m_drivetrain.arcadeDrive(y, x);
   }
 
   @Override

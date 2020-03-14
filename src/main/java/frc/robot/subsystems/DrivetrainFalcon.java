@@ -50,6 +50,8 @@ public class DrivetrainFalcon extends SubsystemBase {
   private NetworkTableEntry rightPosition;
   private NetworkTableEntry rightVelocity;
 
+  private double deadbandThreshold = 0.1;
+
   private final double shiftThreshold = 0.8;
   private final double firstGearSlope = 1 / shiftThreshold;
   private final double secondGearSlope = ((21000 - 9240) / (1-shiftThreshold)) / 21000.;
@@ -146,6 +148,13 @@ public class DrivetrainFalcon extends SubsystemBase {
       rightPosition.setNumber(0.0);
       rightVelocity.setNumber(0.0);
     }
+  }
+
+  public double deadBand(double input) {
+    if (Math.abs(input) < deadbandThreshold) {
+      input = 0;
+    }
+    return input;
   }
 
   /**
