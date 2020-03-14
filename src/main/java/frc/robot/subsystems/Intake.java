@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase {
    */
   private SafeVictorSPX intake_motor;
   private SafeTalonSRX intake_windsheild_wiper;
+  private boolean raised = true;
 
   public Intake() {
     configureShuffleBoard();
@@ -62,5 +63,14 @@ public class Intake extends SubsystemBase {
 
   public void stop(){
     intake_motor.stopMotor();
+  }
+
+  public void toggle() {
+    if (raised) {
+      intake_windsheild_wiper.set(.4);
+    }else {
+      intake_windsheild_wiper.set(-1);
+    }
+    raised = !raised;
   }
 }

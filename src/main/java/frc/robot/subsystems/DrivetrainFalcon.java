@@ -69,8 +69,8 @@ public class DrivetrainFalcon extends SubsystemBase {
       leftSlaveFalcon.follow(leftMasterFalcon);
       rightSlaveFalcon.follow(rightMasterFalcon);
 
-      leftMasterFalcon.setInverted(true);
-      leftSlaveFalcon.setInverted(true);
+      rightMasterFalcon.setInverted(true);
+      rightSlaveFalcon.setInverted(true);
 
       leftMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);
       rightMasterFalcon.configClosedloopRamp(Constants.DRIVETRAIN_RAMP);

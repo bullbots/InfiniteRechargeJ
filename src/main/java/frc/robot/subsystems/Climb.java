@@ -20,10 +20,7 @@ public class Climb extends SubsystemBase {
     private CANPIDController climb_pid_controller = climb_spark_max.getPIDController();
     private CANEncoder climb_encoder = climb_spark_max.getEncoder();
 
-    private DoubleSolenoid brake_solenoid = new DoubleSolenoid(Constants.BRAKE_ON_CHANNEL, Constants.BRAKE_OFF_CHANNEL);
-
     public Climb() {
-        brake();
         climb_spark_max.setSmartCurrentLimit(60);
         climb_spark_max.setIdleMode(IdleMode.kBrake);
     }
@@ -41,14 +38,6 @@ public class Climb extends SubsystemBase {
      */
     public void set(double speed) {
         climb_spark_max.set(speed);
-    }
-
-    public void brake() {
-        brake_solenoid.set(Value.kForward);
-    }
-
-    public void unbrake() {
-        brake_solenoid.set(Value.kReverse);
     }
 
     public void periodic() {

@@ -16,7 +16,7 @@ public class AlignShooter extends CommandBase {
    * Creates a new AlignShooter.
    */
   private DrivetrainFalcon drivetrain;
-  private final double kP = 1. / 640.;
+  private final double kP = 1. / 160;
 
   public AlignShooter(DrivetrainFalcon drivetrain) {
     this.drivetrain = drivetrain;

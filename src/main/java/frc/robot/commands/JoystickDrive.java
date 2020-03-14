@@ -22,11 +22,13 @@ public class JoystickDrive extends CommandBase {
   private DrivetrainFalcon m_drivetrain;
   private DoubleSupplier joyY;
   private DoubleSupplier joyX;
+  private BooleanSupplier forceLow;
 
-  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
+  public JoystickDrive(DrivetrainFalcon drivetrain, DoubleSupplier joyY, DoubleSupplier joyX, BooleanSupplier forceLow) {
     m_drivetrain = drivetrain;
     this.joyY = joyY;
     this.joyX = joyX;
+    this.forceLow = forceLow;
 
     addRequirements(m_drivetrain);
   }
@@ -37,7 +39,10 @@ public class JoystickDrive extends CommandBase {
 
   @Override
   public void execute() {
-    m_drivetrain.arcadeDrive(m_drivetrain.deadBand(joyY.getAsDouble()), m_drivetrain.deadBand(joyX.getAsDouble()));
+    double x = m_drivetrain.deadBand(joyX.getAsDouble());
+    double y = m_drivetrain.deadBand(joyY.getAsDouble());
+
+    m_drivetrain.arcadeDrive(y, x);
   }
 
   @Override
